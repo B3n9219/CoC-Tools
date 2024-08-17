@@ -43,36 +43,10 @@ def get_next_free_row(column,playersInSheet = None):
     return rowsOccupied + sheetHeadingOffset
 
 
-def update_spreadsheet_member_list():
-    playersInClan = get_players_in_clan()
-    playersInSheet = get_players_in_sheet()
-    #playerInClanStatus = sheet.read_range(entire_column(clanStatusColumn),memberSheet)
-    for player in playersInSheet:
-        index = playersInSheet.index(player)
-        #playerName = player[0] #0 is index for players name
-        try:
-            if player.is_player_in_list(playersInClan) and player.clan_status == "TRUE":
-                # Do nothing
-                pass
-            elif player.is_player_in_list(playersInClan) and player.clan_status == "FALSE":
-                print(f"{player} is in the clan but {player}'s status is set to 'FALSE'")
-                # update status from FALSE to TRUE
-                sheet.update_cell(clanStatusColumn + str(index + sheetHeadingOffset), "TRUE", memberSheet)
-            elif not player.is_player_in_list(playersInClan) and player.clan_status == "TRUE":
-                print(f"{player} is not in the clan but their status is set to 'TRUE'")
-                # update status from TRUE to FALSE
-                sheet.update_cell(clanStatusColumn + str(index + sheetHeadingOffset), "FALSE", memberSheet)
-            elif not player.is_player_in_list(playersInClan) and player.clan_status == "FALSE":
-                # Do nothing
-                pass
-        except:
-            if player in playersInClan:
-                print(f"{player} is in the clan but their in clan status is set to ' '")
-            else:
-                print(f"{player} is not in the clan but their in clan status is set to ' '")
-    nextFreeRow = get_next_free_row(nameColumn, playersInSheet)
-    for player in playersInClan:
-        if not player.is_player_in_list(playersInSheet):
+def add_new_members_to_sheet(players_in_clan,players_in_sheet):
+    nextFreeRow = get_next_free_row(nameColumn, players_in_sheet) + 1
+    for player in players_in_clan:
+        if not player.is_player_in_list(players_in_sheet):
             print(f"{player} is in the clan, but not in the spreadsheet")
             playerInfo = [player.name,player.tag,player.role,player.th_level,player.clan_status]
             sheet.batch_update_cells(f"{nameColumn}{nextFreeRow}:{clanStatusColumn}{nextFreeRow}",playerInfo,memberSheet)
@@ -108,6 +82,7 @@ def update_member_sheet():
     sheet.batch_update_cells(f"{roleColumn}{1+sheetHeadingOffset}:{roleColumn}{len(role_update_list)+sheetHeadingOffset}",role_update_list,memberSheet)
     sheet.batch_update_cells(f"{THLevelColumn}{1+sheetHeadingOffset}:{THLevelColumn}{len(th_update_list)+sheetHeadingOffset}",th_update_list,memberSheet)
     sheet.batch_update_cells(f"{clanStatusColumn}{1+sheetHeadingOffset}:{clanStatusColumn}{len(status_update_list)+sheetHeadingOffset}",status_update_list,memberSheet)
+    add_new_members_to_sheet(players_in_clan, players_in_sheet)
 
 
 
