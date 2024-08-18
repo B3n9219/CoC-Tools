@@ -2,9 +2,10 @@ from settings import *
 import requests
 import spreadsheet as sheet
 import members
+from player import *
 
 
-def get__raid_weekend_info():
+def get_raid_weekend_info():
     requestURL = clanRequestURL + clanTag + "/capitalraidseasons"
     response = requests.get(requestURL, headers={"Authorization": "Bearer " + apiKey})
     #print(response.json())
@@ -16,30 +17,29 @@ def get__raid_weekend_info():
 
 
 def filter_info():
-    startDate, memberInfo = get__raid_weekend_info()
+    startDate, memberInfo = get_raid_weekend_info()
     formatedDate = f"{startDate[6:8]}/{startDate[4:6]}/{startDate[0:4]}"
     playerRaidInfo = []
     for item in memberInfo:
-        player = [item["name"], item["tag"]]
-        raidInfo = [{"attacks": item["attacks"],"capitalGoldLooted": item["capitalResourcesLooted"]}]
-        playerRaidInfo.append([player,raidInfo])
+        player = Player(name=item["name"], tag=item["tag"], raid_attacks=item["attacks"], gold_looted=item["capitalResourcesLooted"])
+        playerRaidInfo.append(player)
     return formatedDate, playerRaidInfo
 
 
 def update_capital():
     startDate, playerRaidInfo = filter_info()
-    playerInfo = []
-    playersInSheet = sheet.read_range(entire_column(nameColumn), capitalSheet)
+    players_in_sheet = []
+    playersInSheetNames = sheet.read_range(entire_column(nameColumn), capitalSheet)
     playersInSheetTags = sheet.read_range(entire_column(tagColumn),capitalSheet)
-    for i in range (0,max(len(playersInSheet),len(playersInSheetTags))):
-        playerInfo.append([playersInSheet[i],playersInSheetTags[i]])
-    playerInfo = playerInfo[1:] #removing the title row from the list
+    for i in range (0,max(len(playersInSheetNames),len(playersInSheetTags))):
+        players_in_sheet.append(Player(name=playersInSheetNames[i], tag=playersInSheetTags[i]))
+    players_in_sheet = players_in_sheet[1:] #removing the title row from the list
     playersInClan = members.get_players_in_clan()
-    add_raid_attacks_to_sheet(playerInfo, playersInClan, playerRaidInfo, startDate)
+    add_raid_attacks_to_sheet(players_in_sheet, playersInClan, playerRaidInfo, startDate)
     '''
     for player in playerRaidInfo:
-        if player[0] in playerInfo:
-            playerSheetIndex = playerInfo.index(player[0])
+        if player[0] in players_in_sheet:
+            playerSheetIndex = players_in_sheet.index(player[0])
             print(f"adding {player[1][0]["attacks"]} to row {playerSheetIndex}")
             sheet.update_cell(f"D{playerSheetIndex+sheetHeadingOffset}", player[1][0]["attacks"], capitalSheet)
     '''
@@ -62,30 +62,30 @@ def add_raid_attacks_to_sheet(playersInSheet, playersInClan, playerRaidInfo, sta
     raidInfoToAdd = []
     for player in playersInSheet:
         raidInfoFound = False
-        if player in playersInClan:
+        if player.is_player_in_list(playersInClan):
             for item in playerRaidInfo:
-                if player == item[0]:
-                    raidInfoToAdd.append(item[1][0]["attacks"])
+                if player.is_player_equal_to(item):    #"[[name,tag][attacks,gold]]"
+                    raidInfoToAdd.append(item.raid_attacks)
                     raidInfoFound = True
-                    print(f"{player} used {item[1][0]["attacks"]} attacks")
+                    print(f"{player.name} used {item.raid_attacks} attacks")
                     break
             if not raidInfoFound:
-                print(f"{player} did not attack")
+                print(f"{player.name} did not attack")
                 raidInfoToAdd.append(0)
         else:
             raidInfoToAdd.append("")
-            print(f"{player} was not in the clan")
+            print(f"{player.name} was not in the clan")
     lastFilledColumn, lastFilledWeekend = find_last_entered_weekend()
     freeColumn = find_next_free_column()
     currentWeekendNum = int(sheetSettings["raidWeekendsAdded"])
     raidWeekendTitle = f"Raid Weekend {currentWeekendNum} \n {startDate}"
-    print(f"raid title {raidWeekendTitle}  lastFilled weekend = {lastFilledWeekend}")
+    #print(f"raid title {raidWeekendTitle}  lastFilled weekend = {lastFilledWeekend}")
     if raidWeekendTitle == lastFilledWeekend:
         updateColumn = lastFilledColumn
-        print("UPDATE",updateColumn)
+        #print("UPDATE",updateColumn)
     else:
         updateColumn = freeColumn
-        print("update",updateColumn)
+        #print("update",updateColumn)
         raidWeekendTitle = f"Raid Weekend {currentWeekendNum+1} \n {startDate}"
 
     sheet.update_cell(f"{updateColumn}1",raidWeekendTitle,capitalSheet)

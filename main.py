@@ -12,7 +12,6 @@ clanRequestURL = "https://api.clashofclans.com/v1/clans/%23"  #followed by clan 
 
 
 #updates the member sheet's member list
-#update_settings()
-#members.update_spreadsheet_member_list()
-members.update_member_sheet()
-#capital.update_capital()
+update_settings()
+#members.update_member_sheet()
+capital.update_capital()
