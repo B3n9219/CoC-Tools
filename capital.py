@@ -1,8 +1,8 @@
 from settings import *
 import requests
-import spreadsheet as sheet
 import members
 from player import *
+import utilities as util
 
 
 def get_raid_weekend_info():
@@ -16,18 +16,26 @@ def get_raid_weekend_info():
     return startDate, clanMemberInfo
 
 
-def filter_info():
+def filter_raid_info():
     startDate, memberInfo = get_raid_weekend_info()
-    formatedDate = f"{startDate[6:8]}/{startDate[4:6]}/{startDate[0:4]}"
+    formatedDate = util.convert_json_time_to_date(startDate)
     playerRaidInfo = []
     for item in memberInfo:
         player = Player(name=item["name"], tag=item["tag"], raid_attacks=item["attacks"], gold_looted=item["capitalResourcesLooted"])
         playerRaidInfo.append(player)
     return formatedDate, playerRaidInfo
 
+def update_raid_sheet():
+    players_in_sheet = util.get_players_in_sheet()
+    players_in_clan = util.get_players_in_clan()
+    start_date, player_raid_info = filter_raid_info()
+    info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_raid_info,"Raid", 0)
+    column_title, update_column = util.prepare_attack_column_title("Raid Weekend", start_date, sheetSettings["raidWeekendsAdded"], capitalSheet)
+    util.add_attack_info_to_sheet(info_to_add, column_title, update_column, capitalSheet)
+
 
 def update_capital():
-    startDate, playerRaidInfo = filter_info()
+    startDate, playerRaidInfo = filter_raid_info()
     players_in_sheet = []
     playersInSheetNames = sheet.read_range(entire_column(nameColumn), capitalSheet)
     playersInSheetTags = sheet.read_range(entire_column(tagColumn),capitalSheet)
@@ -52,11 +60,6 @@ def find_last_entered_weekend():
     return weekendColumnNum, weekendTitle
 
 
-def find_next_free_column():
-    columnsFilled = sheet.read_range("1:1",capitalSheet)
-    nextFreeColumn = column_to_number(len(columnsFilled)+1)
-    return nextFreeColumn
-
 
 def add_raid_attacks_to_sheet(playersInSheet, playersInClan, playerRaidInfo, startDate):
     raidInfoToAdd = []
@@ -76,7 +79,7 @@ def add_raid_attacks_to_sheet(playersInSheet, playersInClan, playerRaidInfo, sta
             raidInfoToAdd.append("")
             print(f"{player.name} was not in the clan")
     lastFilledColumn, lastFilledWeekend = find_last_entered_weekend()
-    freeColumn = find_next_free_column()
+    freeColumn = util.find_next_free_column(capitalSheet)
     currentWeekendNum = int(sheetSettings["raidWeekendsAdded"])
     raidWeekendTitle = f"Raid Weekend {currentWeekendNum} \n {startDate}"
     #print(f"raid title {raidWeekendTitle}  lastFilled weekend = {lastFilledWeekend}")
