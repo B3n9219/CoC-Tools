@@ -1,8 +1,7 @@
-from settings import *
 import requests
-import spreadsheet as sheet
-from player import *
+from settings import *
 import utilities as util
+from player import *
 
 def get_recent_war_info():
     requestURL = clanRequestURL + clanTag + "/currentwar"

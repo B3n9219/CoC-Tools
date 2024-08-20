@@ -1,5 +1,5 @@
 class Player():
-    def __init__(self, name, tag, role=None, th_level=None, clan_status=None, war_attacks = 0, raid_attacks = 0, gold_looted = 0):
+    def __init__(self, name, tag, role=None, th_level=None, clan_status=None, war_attacks = 0, raid_attacks = 0, gold_looted = 0, games_score = 0):
         self.name = name
         self.tag = tag
         self.role = role
@@ -8,6 +8,7 @@ class Player():
         self.war_attacks = war_attacks
         self.raid_attacks = raid_attacks
         self.gold_looted = gold_looted
+        self.games_score = games_score
 
     def __str__(self):
         return f"name: {self.name}, tag: {self.tag}"
@@ -32,3 +33,5 @@ class Player():
             return self.war_attacks
         if attackType == "Raid":
             return self.raid_attacks
+        if attackType == "Games":
+            return self.games_score

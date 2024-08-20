@@ -1,13 +1,12 @@
-from settings import *
 import requests
-import members
-from player import *
+from settings import *
 import utilities as util
+from player import *
 
 
 def get_raid_weekend_info():
     requestURL = clanRequestURL + clanTag + "/capitalraidseasons"
-    response = requests.get(requestURL, headers={"Authorization": "Bearer " + apiKey})
+    response = requests.get(requestURL)#, headers={"Authorization": "Bearer " + apiKey})
     #print(response.json())
     info = response.json()["items"][0]
     startDate = info["startTime"]
