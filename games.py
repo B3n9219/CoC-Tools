@@ -15,9 +15,8 @@ def get_clan_games_json_info():
 
 
 def get_clan_games_info():
-    currentDate = datetime.datetime.now()
     currentDay = currentDate.day
-    if int(currentDay) < 20:
+    if int(currentDay) < 22:
         updateDate = currentDate - relativedelta(months=1)
     else:
         updateDate = currentDate

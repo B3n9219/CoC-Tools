@@ -90,13 +90,68 @@ def read_range(cellRange, sheet):
         result = (
             sheets.values().get(spreadsheetId=SPREADSHEET_ID, range=fullRange).execute()
         )
-        rows = result.get("values", [])
-        print(f"{len(rows)} rows retrieved from cell range {fullRange}")
-        result = result["values"]
-        result = [word for sublist in result for word in sublist]
+        if "values" in result:
+            rows = result["values"]
+            print(f"{len(rows)} rows retrieved from cell range {fullRange}")
+            # Flatten the list of lists into a single list
+            result = [word for sublist in rows for word in sublist]
+        else:
+            # If "values" key is missing, it means the range is empty
+            print(f"No values found in the range {fullRange}")
+            result = []
         return result
 
     except HttpError as error:
         print(error)
+
+
+def get_sheet_id_by_name(sheet_name):
+    """Retrieve the sheetId of a given sheet by its name."""
+    # Get spreadsheet metadata
+    spreadsheet = service.spreadsheets().get(spreadsheetId=SPREADSHEET_ID).execute()
+
+    # Iterate through sheets to find the matching sheet name
+    for sheet in spreadsheet['sheets']:
+        if sheet['properties']['title'] == sheet_name:
+            return sheet['properties']['sheetId']
+
+    raise ValueError(f"Sheet with name '{sheet_name}' not found.")
+
+def merge_cells(start_row, end_row, start_column, end_column, sheet_name):
+    """Merge a range of cells in a specified sheet of Google Sheets.
+
+    Args:
+        start_row (int): The starting row of the range to merge (zero-indexed).
+        end_row (int): The ending row of the range to merge (zero-indexed, exclusive).
+        start_column (int): The starting column of the range to merge (zero-indexed).
+        end_column (int): The ending column of the range to merge (zero-indexed, exclusive).
+    """
+    creds = get_credentials()
+    service = build('sheets', 'v4', credentials=creds)
+
+    sheet_id = get_sheet_id_by_name(sheet_name)
+    # Define the merge request
+    merge_request = {
+        'requests': [
+            {
+                'mergeCells': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': start_row,
+                        'endRowIndex': end_row,
+                        'startColumnIndex': start_column,
+                        'endColumnIndex': end_column
+                    },
+                    'mergeType': 'MERGE_ALL'
+                }
+            }
+        ]
+    }
+
+    # Send the batchUpdate request
+    request = service.spreadsheets().batchUpdate(spreadsheetId=SPREADSHEET_ID, body=merge_request)
+    response = request.execute()
+
+    print(f"Cells merged in sheet ID {sheet_id}, range {start_row}:{end_row} - {start_column}:{end_column}")
 
 
