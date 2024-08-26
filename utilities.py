@@ -13,8 +13,12 @@ def get_clan_members_json_info():
 
 
 def convert_json_time_to_date(time):
-    formated_date = f"{time[6:8]}/{time[4:6]}/{time[0:4]}"
+    try:
+        formated_date = f"{time[6:8]}/{time[4:6]}/{time[0:4]}"
+    except:
+        formated_date = time
     return formated_date
+
 
 def find_last_filled_column(check_sheet):
     columnsFilled = sheet.read_range("1:1", check_sheet)
