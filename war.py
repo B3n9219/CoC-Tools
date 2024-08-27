@@ -15,6 +15,12 @@ def get_ck_war_info():
         war_statuses[formatted_date] = item["state"]
     return info, war_statuses
 
+def find_war_endpoint(war):
+    if war["clan"]["tag"] == f"#{clanTag}":
+        return "clan"
+    else:
+        return "opponent"
+
 
 def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_war_statuses):
     print(api_war_statuses)
@@ -36,21 +42,16 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
         if sheet_war_dates[i] in api_war_statuses:
             #print(sheet_war_statuses[i],api_war_statuses[sheet_war_dates[i]])
             if sheet_war_statuses[i] != api_war_statuses[sheet_war_dates[i]]:
-                #print("update")
                 for war in war_info:
-                    #util.print_json(war)
-                    #print(util.convert_json_time_to_date(war["startTime"]))
-                    #print(sheet_war_dates[i])
                     if util.convert_json_time_to_date(war["startTime"]) == sheet_war_dates[i]:
-                        war_attack_info = filter_war_info(war["clan"]["members"])
+                        clan_endpoint = find_war_endpoint(war)
+                        war_attack_info = filter_war_info(war[clan_endpoint]["members"])
                         update_column = i+1+war_info_columns
                         update_column = column_to_number(update_column)
                         #print(sheet_war_dates[i],filter_war_info(war["clan"]["members"]),i+1+war_info_columns)
                         title = sheet_war_titles[i+war_info_columns].split('\n')[0] + '\n'
                         title = f"{title}{sheet_war_dates[i]}"
-                        #print("TITTLE",title)
-                        #print(api_war_statuses)
-                        #print("STATUS",api_war_statuses[sheet_war_dates[i]])
+                        print(war_attack_info)
                         add_war_to_sheet(players_in_sheet,players_in_clan,war_attack_info, update_column, title, api_war_statuses[sheet_war_dates[i]])
 
 
@@ -63,10 +64,11 @@ def get_recent_war_info():
     #print(response.json())
     info = response.json()
     startDate = info["startTime"]
+    war_state = info["state"]
     #startDate = startDate[:8]  #removing the time from the startDate
     clanMemberInfo = info["clan"]["members"]
     formatted_date = util.convert_json_time_to_date(startDate)
-    return formatted_date, filter_war_info(clanMemberInfo)
+    return formatted_date, war_state, filter_war_info(clanMemberInfo)
 
 def filter_war_info(memberInfo):
     playerWarInfo = []
@@ -96,16 +98,20 @@ def update_war_sheet():
 def update_past_war():
     pass
 def add_new_war(players_in_sheet, players_in_clan):
-    start_date, player_war_info = get_recent_war_info()
-    status = get_recent_war_status(start_date)
+    start_date, war_state, player_war_info = get_recent_war_info()
+    status = get_recent_war_status(start_date, war_state)
     column_title, update_column = util.prepare_attack_column_title("War", start_date, sheetSettings["normalWarsAdded"], warSheet)
-    add_war_to_sheet(players_in_sheet, players_in_clan, player_war_info, update_column, column_title, status)
+    if war_state != 'preparation':
+        add_war_to_sheet(players_in_sheet, players_in_clan, player_war_info, update_column, column_title, status)
 
-def get_recent_war_status(start_date):
+def get_recent_war_status(start_date, war_state):
     war_start_date = datetime.strptime(start_date, '%d/%m/%Y')
     date_difference = abs((war_start_date - currentDate).days)
     within_two_days = date_difference <= 2
     if within_two_days:
-        return "currentWar"
+        if war_state == "preparation":
+            return "prep day"
+        else:
+            return "battle day"
     else:
-        return "warEnded"
+        return "war ended"

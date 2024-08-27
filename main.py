@@ -10,10 +10,10 @@ import cwl
 
 #updates the member sheet's member list
 update_settings()
-members.update_member_sheet()
+#members.update_member_sheet()
 
-war.update_war_sheet()
+#war.update_war_sheet()
 capital.update_raid_sheet()
 
-cwl.update_cwl_sheet()
-games.update_games_sheet()
+#cwl.update_cwl_sheet()
+#games.update_games_sheet()

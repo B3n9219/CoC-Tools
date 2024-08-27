@@ -17,7 +17,7 @@ SPREADSHEET_ID = "1mnlquv54_uJrtR_FXwLlZhiM9lskqSwSbP-pBW2uN6A"
 
 columns_per_CWL = 3
 CWL_info_columns = 3
-war_info_columns = 3
+war_info_columns = 6
 
 sheetHeadingOffset = 2
 
