@@ -8,46 +8,49 @@ def get_CWL_info():
     start_date = str(currentDate)[:7]
     requestURL = f"{baseRequest}/cwl/%23{clanTag}/{start_date}"
     response = requests.get(requestURL)#, headers={"Authorization": "Bearer " + apiKey})
-    info = response.json()["rounds"]
-    player_attack_info = {}
-    player_list = []
-    for round in info:
-        roundNum = info.index(round) + 1
-        clan_info = []
-        #util.print_json(item_path)
-        for clan in round["warTags"]:
-            if clan["clan"]["tag"] == f"#{clanTag}":
-                #print("1ST", clan["startTime"][:8], clan["clan"]["name"])
-                clan_info.append(clan["clan"]["members"])
-            elif clan["opponent"]["tag"] == f"#{clanTag}":
-                #print("2ND", clan["startTime"][:8], clan["opponent"]["name"])
-                clan_info.append(clan["opponent"]["members"])
-        for attack_info in clan_info:
-            for player_info in attack_info:
-                stars_earned = 0
-                attacks_used = 0
-                attacks_available = 1
-                player_tag = player_info["tag"]
-                try:
-                    stars_earned = player_info["attacks"][0]["stars"]
-                    attacks_used = 1
-                except:
+    if response.status_code == 200:
+        info = response.json()["rounds"]
+        player_attack_info = {}
+        player_list = []
+        for round in info:
+            roundNum = info.index(round) + 1
+            clan_info = []
+            #util.print_json(item_path)
+            for clan in round["warTags"]:
+                if clan["clan"]["tag"] == f"#{clanTag}":
+                    #print("1ST", clan["startTime"][:8], clan["clan"]["name"])
+                    clan_info.append(clan["clan"]["members"])
+                elif clan["opponent"]["tag"] == f"#{clanTag}":
+                    #print("2ND", clan["startTime"][:8], clan["opponent"]["name"])
+                    clan_info.append(clan["opponent"]["members"])
+            for attack_info in clan_info:
+                for player_info in attack_info:
                     stars_earned = 0
                     attacks_used = 0
-                if player_tag in player_attack_info:
-                    player_attack_info[player_tag][0] = player_info["name"]
-                    player_attack_info[player_tag][1] += stars_earned
-                    player_attack_info[player_tag][2] += attacks_used
-                    player_attack_info[player_tag][3] += attacks_available
-                else:
-                    player_attack_info[player_info["tag"]] = [player_info["name"], stars_earned, attacks_used,
-                                                              attacks_available]
-    for info in list(player_attack_info.items()):
-        print(info)
-        player = Player(tag=info[0],name=info[1][0],cwl_stars=info[1][1], cwl_attacks_used=info[1][2], cwl_attacks_available=info[1][3])
-        #print(f"name:{player.name} tag:{player.tag} cwl_stars:{player.cwl_stars} cwl_attacks_used{player.cwl_attacks_used} avaialable:{player.cwl_attacks_available}")
-        player_list.append(player)
-    return start_date, player_list
+                    attacks_available = 1
+                    player_tag = player_info["tag"]
+                    try:
+                        stars_earned = player_info["attacks"][0]["stars"]
+                        attacks_used = 1
+                    except:
+                        stars_earned = 0
+                        attacks_used = 0
+                    if player_tag in player_attack_info:
+                        player_attack_info[player_tag][0] = player_info["name"]
+                        player_attack_info[player_tag][1] += stars_earned
+                        player_attack_info[player_tag][2] += attacks_used
+                        player_attack_info[player_tag][3] += attacks_available
+                    else:
+                        player_attack_info[player_info["tag"]] = [player_info["name"], stars_earned, attacks_used,
+                                                                  attacks_available]
+        for info in list(player_attack_info.items()):
+            print(info)
+            player = Player(tag=info[0],name=info[1][0],cwl_stars=info[1][1], cwl_attacks_used=info[1][2], cwl_attacks_available=info[1][3])
+            #print(f"name:{player.name} tag:{player.tag} cwl_stars:{player.cwl_stars} cwl_attacks_used{player.cwl_attacks_used} avaialable:{player.cwl_attacks_available}")
+            player_list.append(player)
+        return start_date, player_list, True
+    else:
+        return "", [], False
 
 
 def find_last_filled_column(check_sheet):
@@ -84,26 +87,27 @@ def select_cwl_update_column(start_date):
 
 
 def update_cwl_sheet():
-    players_in_sheet = util.get_players_in_sheet()
+    players_in_sheet = util.get_players_in_sheet(cwlSheet)
     players_in_clan = util.get_players_in_clan()
-    start_date, player_cwl_info = get_CWL_info()
+    start_date, player_cwl_info, info_found = get_CWL_info()
+    if info_found:
+        entry_title, update_column = select_cwl_update_column(start_date)
 
-    entry_title, update_column = select_cwl_update_column(start_date)
+        sheet.merge_cells(0,1,update_column-1,update_column -1 + columns_per_CWL,cwlSheet)
+        sheet.update_cell(f"{column_to_number(update_column)}1", entry_title ,cwlSheet)
 
-    #cwl_column_index = int(sheetSettings["cwlSeasonsAdded"])*columns_per_CWL + CWL_info_columns + 1
-    #print("CWL",cwl_column_index)
-    #cwl_column = column_to_number(cwl_column_index)
-    sheet.merge_cells(0,1,update_column-1,update_column -1 + columns_per_CWL,cwlSheet)
-    sheet.update_cell(f"{column_to_number(update_column)}1", entry_title ,cwlSheet)
+        info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_cwl_info, "Stars", "")
+        util.add_attack_info_to_sheet(info_to_add, "Stars Earned", column_to_number(update_column), cwlSheet, 1)
 
-    info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_cwl_info, "Stars", "")
-    util.add_attack_info_to_sheet(info_to_add, "Stars Earned", column_to_number(update_column), cwlSheet, 1)
+        info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_cwl_info, "AttacksUsed", "")
+        util.add_attack_info_to_sheet(info_to_add, "Attacks Used", column_to_number(update_column+1), cwlSheet, 1)
 
-    info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_cwl_info, "AttacksUsed", "")
-    util.add_attack_info_to_sheet(info_to_add, "Attacks Used", column_to_number(update_column+1), cwlSheet, 1)
+        info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_cwl_info, "AttacksAvailable", "")
+        util.add_attack_info_to_sheet(info_to_add, "Attacks Available", column_to_number(update_column+2), cwlSheet, 1)
 
-    info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_cwl_info, "AttacksAvailable", "")
-    util.add_attack_info_to_sheet(info_to_add, "Attacks Available", column_to_number(update_column+2), cwlSheet, 1)
+        sheet.update_cell(f"{column_to_number(update_column+3)}2", "Stars per Attack", cwlSheet)
+        sheet.update_cell(f"{column_to_number(update_column+4)}2", "Attacks Missed", cwlSheet)
+
 
 
 

@@ -9,17 +9,37 @@ baseRequest = "https://api.clashking.xyz"
 playerRequestURL = f"{baseRequest}/player/%23"  #followed by player tag (no #)
 clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
 
+#The Fireflies:
+#clanTag = "2R989CY89"
+#SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
 
-clanTag = "2R989CY89"
+#The Fireflies 2:
 #clanTag = "2RLQPCVO8"
-SPREADSHEET_ID = "1mnlquv54_uJrtR_FXwLlZhiM9lskqSwSbP-pBW2uN6A"
 #SPREADSHEET_ID = "1FKPLEb4zvICDhsT0TgT8BlpWObj3kAR0y01W7RuuNUw"
 
-columns_per_CWL = 3
-CWL_info_columns = 3
+#The Bureau
+#clanTag = "2G0RLQ9J0"
+#SPREADSHEET_ID = "1ATDoewJG9UXnwtKvp8yrrGLgeSdps9dHlTsXZiIOh70"
+
+#The Real
+#clanTag = "822VUL29"
+#SPREADSHEET_ID = "13dUQ7paaWoYbe9oEdWy9tkp5PVsQDizD8J6L5XX2BWk"
+
+#SKILL MAN
+#clanTag = "VVQ8VLPC"
+#SPREADSHEET_ID = "1oxlTAXwYyd6fJdAIfAAnqc7aaKZlWuct8RIZ2KpzMsg"
+
+#Dark Alliance
+clanTag = "Q8CY8LYV"
+SPREADSHEET_ID = "1tlkV018ijrKsJVNUOyz-cusBYRY2-shVNECC8g9Tu1Y"
+
+
+
+columns_per_CWL = 5
+CWL_info_columns = 7
 war_info_columns = 6
 
-sheetHeadingOffset = 2
+title_row_offset = 2
 
 #SPREADSHEET SHEET NAMES
 memberSheet = "MEMBERS"
@@ -32,9 +52,9 @@ cwlSheet = "CWL"
 #SPREADSHEET COLUMNS
 nameColumn = "A"
 tagColumn = "B"
-roleColumn = "C"
-THLevelColumn = "D"
-clanStatusColumn = "E"
+clanStatusColumn = "C"
+roleColumn = "D"
+THLevelColumn = "E"
 
 settingNameColumn = "A"
 settingValueColumn = "B"

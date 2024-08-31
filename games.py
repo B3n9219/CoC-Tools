@@ -10,7 +10,11 @@ def get_clan_games_json_info():
         player_tag = player.tag[1:] #removing the '#' from the start of the tag
         requestURL = playerRequestURL + player_tag + "/stats"
         response = requests.get(requestURL)
-        json_info.append(response.json())
+        print(response.status_code)
+        if response.status_code == 200:
+            json_info.append((response.json(),True))
+        else:
+            json_info.append(({"name": player.name, "tag": player.tag},False))
     return json_info
 
 
@@ -23,20 +27,29 @@ def get_clan_games_info():
     update_date_str = str(updateDate)[:7]
     json_info = get_clan_games_json_info()
     clan_games_participants = []
+    util.print_json(json_info)
     for player_info in json_info:
-        player = Player(name=player_info["name"], tag=player_info["tag"])
+        player_stats = player_info[0]
+        util.print_json(player_info)
+        player = Player(name=player_stats["name"], tag=player_stats["tag"])
         try:
-            player.games_score = player_info["clan_games"][update_date_str]["points"]
+            player.games_score = player_stats["clan_games"][update_date_str]["points"]
+            if player.games_score > 4000:
+                player.games_score = 4000
             clan_games_participants.append(player)
         except:
-            player.games_score = 0
+            if player_info[1] == True:
+                player.games_score = 0
+            else:
+                player.games_score = ""
             clan_games_participants.append(player)
     return update_date_str, clan_games_participants
 
 
 
 def update_games_sheet():
-    players_in_sheet = util.get_players_in_sheet()
+    players_in_sheet = util.get_players_in_sheet(clanGamesSheet)
+    print(players_in_sheet)
     players_in_clan = util.get_players_in_clan()
     start_date, player_games_info = get_clan_games_info()
     print(start_date)

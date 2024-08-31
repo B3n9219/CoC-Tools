@@ -75,21 +75,29 @@ def add_attack_info_to_sheet(attack_info_to_add, entry_title, update_column, upd
     print(attack_info_to_add)
     sheet.update_cell(f"{update_column}{1+additional_offset}", entry_title, updateSheet)
     sheet.batch_update_cells(
-        f"{update_column}{sheetHeadingOffset+additional_offset}:{update_column}{len(attack_info_to_add) + sheetHeadingOffset + additional_offset}",
+        f"{update_column}{title_row_offset+1}:{update_column}{len(attack_info_to_add) + title_row_offset + additional_offset}",
         attack_info_to_add, updateSheet)
 
 
-def get_players_in_sheet():
-    playerNames = sheet.read_range(entire_column(nameColumn),memberSheet)
-    playerTags = sheet.read_range(entire_column(tagColumn),memberSheet)
-    playerClanStatus = sheet.read_range(entire_column(clanStatusColumn),memberSheet)
+def get_players_in_sheet(check_sheet):
+    playerNames = sheet.read_range(entire_column(nameColumn), check_sheet)
+    playerTags = sheet.read_range(entire_column(tagColumn), check_sheet)
+    playerClanStatus = sheet.read_range(entire_column(clanStatusColumn), check_sheet)
     playerNum = max(len(playerNames),len(playerTags))
     players = []
     if len(playerNames) != len(playerTags):
         raise Exception("Not the same number or player names and tags in the spreadsheet")
     for i in range (0,playerNum):
         players.append(Player(name=playerNames[i], tag=playerTags[i], clan_status=playerClanStatus[i]))
-    return players
+    return trim_players_in_sheet(players)
+
+def trim_players_in_sheet(players):
+    i = 0
+    while players[i].tag[0] != "#":
+        i += 1
+    return players[i:]
+
+
 
 def get_players_in_clan():
     jsonInfo = get_clan_members_json_info()

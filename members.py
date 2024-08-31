@@ -35,21 +35,22 @@ def get_players_in_sheet():
     return players
 
 
-def get_next_free_row(column,playersInSheet = None):
+def get_next_free_row(column, playersInSheet = None):
     if playersInSheet is None:
         playersInSheet = get_players_in_sheet()
-    rowsOccupied = len(playersInSheet)
-    print("next free row",rowsOccupied + sheetHeadingOffset)
-    return rowsOccupied + sheetHeadingOffset
+    rows_occupied = len(playersInSheet)
+    next_free_row = rows_occupied + title_row_offset + 1
+    print("next free row", next_free_row)
+    return next_free_row
 
 
 def add_new_members_to_sheet(players_in_clan,players_in_sheet):
-    nextFreeRow = get_next_free_row(nameColumn, players_in_sheet) + 1
+    nextFreeRow = get_next_free_row(nameColumn, players_in_sheet)
     for player in players_in_clan:
         if not player.is_player_in_list(players_in_sheet):
             print(f"{player} is in the clan, but not in the spreadsheet")
-            playerInfo = [player.name,player.tag,player.role,player.th_level,player.clan_status]
-            sheet.batch_update_cells(f"{nameColumn}{nextFreeRow}:{clanStatusColumn}{nextFreeRow}",playerInfo,memberSheet)
+            playerInfo = [player.name, player.tag, player.clan_status, player.role, player.th_level]
+            sheet.batch_update_cells(f"{nameColumn}{nextFreeRow}:{THLevelColumn}{nextFreeRow}",playerInfo,memberSheet)
             nextFreeRow += 1
 
 
@@ -77,11 +78,11 @@ def update_member_sheet():
         role_update_list.append(item[2])
         th_update_list.append(item[3])
         status_update_list.append(item[4])
-    sheet.batch_update_cells(f"{nameColumn}{1+sheetHeadingOffset}:{nameColumn}{len(name_update_list)+sheetHeadingOffset}",name_update_list,memberSheet)
-    sheet.batch_update_cells(f"{tagColumn}{1+sheetHeadingOffset}:{tagColumn}{len(tag_update_list)+sheetHeadingOffset}",tag_update_list,memberSheet)
-    sheet.batch_update_cells(f"{roleColumn}{1+sheetHeadingOffset}:{roleColumn}{len(role_update_list)+sheetHeadingOffset}",role_update_list,memberSheet)
-    sheet.batch_update_cells(f"{THLevelColumn}{1+sheetHeadingOffset}:{THLevelColumn}{len(th_update_list)+sheetHeadingOffset}",th_update_list,memberSheet)
-    sheet.batch_update_cells(f"{clanStatusColumn}{1+sheetHeadingOffset}:{clanStatusColumn}{len(status_update_list)+sheetHeadingOffset}",status_update_list,memberSheet)
+    sheet.batch_update_cells(f"{nameColumn}{1 + title_row_offset}:{nameColumn}{len(name_update_list) + title_row_offset}", name_update_list, memberSheet)
+    sheet.batch_update_cells(f"{tagColumn}{1 + title_row_offset}:{tagColumn}{len(tag_update_list) + title_row_offset}", tag_update_list, memberSheet)
+    sheet.batch_update_cells(f"{roleColumn}{1 + title_row_offset}:{roleColumn}{len(role_update_list) + title_row_offset}", role_update_list, memberSheet)
+    sheet.batch_update_cells(f"{THLevelColumn}{1 + title_row_offset}:{THLevelColumn}{len(th_update_list) + title_row_offset}", th_update_list, memberSheet)
+    sheet.batch_update_cells(f"{clanStatusColumn}{1 + title_row_offset}:{clanStatusColumn}{len(status_update_list) + title_row_offset}", status_update_list, memberSheet)
     add_new_members_to_sheet(players_in_clan, players_in_sheet)
 
 
