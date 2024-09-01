@@ -33,14 +33,10 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
         if match:
             date = match.group()
             sheet_war_dates.append(date)
-            #print("Extracted date:", date)
         else:
             pass
-            #print(title,"no match")
-    #print(sheet_war_dates, sheet_war_statuses)
     for i in range(0, len(sheet_war_dates)):
         if sheet_war_dates[i] in api_war_statuses:
-            #print(sheet_war_statuses[i],api_war_statuses[sheet_war_dates[i]])
             if sheet_war_statuses[i] != api_war_statuses[sheet_war_dates[i]]:
                 for war in war_info:
                     if util.convert_json_time_to_date(war["startTime"]) == sheet_war_dates[i]:
@@ -48,7 +44,6 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
                         war_attack_info = filter_war_info(war[clan_endpoint]["members"])
                         update_column = i+1+war_info_columns
                         update_column = column_to_number(update_column)
-                        #print(sheet_war_dates[i],filter_war_info(war["clan"]["members"]),i+1+war_info_columns)
                         title = sheet_war_titles[i+war_info_columns].split('\n')[0] + '\n'
                         title = f"{title}{sheet_war_dates[i]}"
                         print(war_attack_info)

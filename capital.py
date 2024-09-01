@@ -6,8 +6,7 @@ from player import *
 
 def get_raid_weekend_info():
     requestURL = clanRequestURL + clanTag + "/capitalraidseasons"
-    response = requests.get(requestURL)#, headers={"Authorization": "Bearer " + apiKey})
-    #print(response.json())
+    response = requests.get(requestURL)
     info = response.json()["items"][0]
     raid_state = info["state"]
     startDate = info["startTime"]
@@ -32,7 +31,6 @@ def update_raid_sheet():
     info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_raid_info,"Raid", 0)
     print(info_to_add)
     column_title, update_column = util.prepare_attack_column_title("Raid Weekend", start_date, sheetSettings["raidWeekendsAdded"], capitalSheet)
-    #if sheet.read_range(f"{update_column}2", capitalSheet) == "ended" and raid_state == "ended":
     try:
         sheet_raid_state = sheet.read_range(f"{update_column}2", capitalSheet)[0].split(":")[1].strip()
     except:
@@ -40,9 +38,6 @@ def update_raid_sheet():
     if sheet_raid_state != "ended":
         util.add_attack_info_to_sheet(info_to_add, column_title, update_column, capitalSheet)
         sheet.update_cell(f"{update_column}2", f"status: {api_raid_state}", capitalSheet)
-
-    #print(f"Sheet: {sheet_raid_state}, API: {api_raid_state}")
-
 
 
 

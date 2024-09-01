@@ -80,9 +80,6 @@ def batch_update_cells(cellRange, textList, sheet):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-# Example usage:
-# batch_update_cells("A3:A10", ["Value1", "Value2", "Value3", ..., "Value8"])
-
 
 def read_range(cellRange, sheet):
     fullRange = f"{sheet}!{cellRange}"
@@ -106,7 +103,6 @@ def read_range(cellRange, sheet):
 
 
 def get_sheet_id_by_name(sheet_name):
-    """Retrieve the sheetId of a given sheet by its name."""
     # Get spreadsheet metadata
     spreadsheet = service.spreadsheets().get(spreadsheetId=SPREADSHEET_ID).execute()
 
@@ -118,14 +114,6 @@ def get_sheet_id_by_name(sheet_name):
     raise ValueError(f"Sheet with name '{sheet_name}' not found.")
 
 def merge_cells(start_row, end_row, start_column, end_column, sheet_name):
-    """Merge a range of cells in a specified sheet of Google Sheets.
-
-    Args:
-        start_row (int): The starting row of the range to merge (zero-indexed).
-        end_row (int): The ending row of the range to merge (zero-indexed, exclusive).
-        start_column (int): The starting column of the range to merge (zero-indexed).
-        end_column (int): The ending column of the range to merge (zero-indexed, exclusive).
-    """
     creds = get_credentials()
     service = build('sheets', 'v4', credentials=creds)
 
@@ -147,8 +135,6 @@ def merge_cells(start_row, end_row, start_column, end_column, sheet_name):
             }
         ]
     }
-
-    # Send the batchUpdate request
     request = service.spreadsheets().batchUpdate(spreadsheetId=SPREADSHEET_ID, body=merge_request)
     response = request.execute()
 

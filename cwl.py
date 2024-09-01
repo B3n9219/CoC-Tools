@@ -6,8 +6,12 @@ from player import *
 
 def get_CWL_info():
     start_date = str(currentDate)[:7]
+    start_date = "2024-08"
     requestURL = f"{baseRequest}/cwl/%23{clanTag}/{start_date}"
-    response = requests.get(requestURL)#, headers={"Authorization": "Bearer " + apiKey})
+    response = requests.get(requestURL)
+    print(requestURL)
+    print("valid url: https://api.clashking.xyz/cwl/%232RLQPCVO8/2024-08")
+    print(response.status_code)
     if response.status_code == 200:
         info = response.json()["rounds"]
         player_attack_info = {}
@@ -24,6 +28,7 @@ def get_CWL_info():
                     #print("2ND", clan["startTime"][:8], clan["opponent"]["name"])
                     clan_info.append(clan["opponent"]["members"])
             for attack_info in clan_info:
+                util.print_json(attack_info)
                 for player_info in attack_info:
                     stars_earned = 0
                     attacks_used = 0
@@ -46,28 +51,12 @@ def get_CWL_info():
         for info in list(player_attack_info.items()):
             print(info)
             player = Player(tag=info[0],name=info[1][0],cwl_stars=info[1][1], cwl_attacks_used=info[1][2], cwl_attacks_available=info[1][3])
-            #print(f"name:{player.name} tag:{player.tag} cwl_stars:{player.cwl_stars} cwl_attacks_used{player.cwl_attacks_used} avaialable:{player.cwl_attacks_available}")
+            print(f"name:{player.name} tag:{player.tag} cwl_stars:{player.cwl_stars} cwl_attacks_used{player.cwl_attacks_used} avaialable:{player.cwl_attacks_available}")
             player_list.append(player)
         return start_date, player_list, True
     else:
         return "", [], False
 
-
-def find_last_filled_column(check_sheet):
-    columnsFilled = sheet.read_range("1:1", check_sheet)
-    column_title = columnsFilled[-1]
-    column_index = column_to_number(len(columnsFilled))
-    return column_index, column_title
-
-
-
-def find_next_free_cwl_column():
-    columns_filled = sheet.read_range("2:2", cwlSheet)
-    if len(columns_filled) == 0:
-        next_free_column = column_to_number(len(columns_filled)+1+3)
-    else:
-        next_free_column = column_to_number(len(columns_filled)+1)
-    return next_free_column
 
 def select_cwl_update_column(start_date):
     cwl_added_to_sheet = int(sheetSettings["cwlSeasonsAdded"])
@@ -80,10 +69,6 @@ def select_cwl_update_column(start_date):
         update_column = next_free_column
         entry_title = f"CWL {cwl_added_to_sheet+1} \n {start_date}"
     return entry_title, update_column
-
-
-
-
 
 
 def update_cwl_sheet():
@@ -107,7 +92,3 @@ def update_cwl_sheet():
 
         sheet.update_cell(f"{column_to_number(update_column+3)}2", "Stars per Attack", cwlSheet)
         sheet.update_cell(f"{column_to_number(update_column+4)}2", "Attacks Missed", cwlSheet)
-
-
-
-

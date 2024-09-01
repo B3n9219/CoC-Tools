@@ -10,12 +10,12 @@ playerRequestURL = f"{baseRequest}/player/%23"  #followed by player tag (no #)
 clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
 
 #The Fireflies:
-#clanTag = "2R989CY89"
-#SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
+clanTag = "2R989CY89"
+SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
 
 #The Fireflies 2:
 #clanTag = "2RLQPCVO8"
-#SPREADSHEET_ID = "1FKPLEb4zvICDhsT0TgT8BlpWObj3kAR0y01W7RuuNUw"
+#SPREADSHEET_ID = "1i4axEHp1-1PTHNJ_NKNb5ZMH58_ljz08feGyKRZofro"
 
 #The Bureau
 #clanTag = "2G0RLQ9J0"
@@ -30,8 +30,8 @@ clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
 #SPREADSHEET_ID = "1oxlTAXwYyd6fJdAIfAAnqc7aaKZlWuct8RIZ2KpzMsg"
 
 #Dark Alliance
-clanTag = "Q8CY8LYV"
-SPREADSHEET_ID = "1tlkV018ijrKsJVNUOyz-cusBYRY2-shVNECC8g9Tu1Y"
+#clanTag = "Q8CY8LYV"
+#SPREADSHEET_ID = "1tlkV018ijrKsJVNUOyz-cusBYRY2-shVNECC8g9Tu1Y"
 
 
 
