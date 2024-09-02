@@ -8,11 +8,12 @@ import games
 import cwl
 
 
-update_settings()
-#members.update_member_sheet()
 
-#war.update_war_sheet()
-#capital.update_raid_sheet()
+update_settings()
+members.update_member_sheet()
+
+war.update_war_sheet()
+capital.update_raid_sheet()
 
 cwl.update_cwl_sheet()
 #games.update_games_sheet()

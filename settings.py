@@ -1,6 +1,7 @@
 import spreadsheet as sheet
 from datetime import *
 from dateutil.relativedelta import relativedelta
+import argparse
 
 currentDate = datetime.now()
 
@@ -9,9 +10,27 @@ baseRequest = "https://api.clashking.xyz"
 playerRequestURL = f"{baseRequest}/player/%23"  #followed by player tag (no #)
 clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
 
+def get_command_line_inputs():
+    parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
+    parser.add_argument('tag', type=str, help='A tag (string input, no #)')
+    parser.add_argument('ID', type=str, help='Your sheet ID (string input)')
+    # Parse the arguments
+    args = parser.parse_args()
+    # Store the arguments in variables
+    tag = args.tag
+    sheet_ID = args.ID
+    # Output the stored variables (optional)
+    print(f"Tag: {tag}")
+    print(f"ID: {sheet_ID}")
+    return tag, sheet_ID
+
+
+clanTag, SPREADSHEET_ID = get_command_line_inputs()
+
+
 #The Fireflies:
-clanTag = "2R989CY89"
-SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
+#clanTag = "2R989CY89"
+#SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
 
 #The Fireflies 2:
 #clanTag = "2RLQPCVO8"
@@ -33,6 +52,9 @@ SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
 #clanTag = "Q8CY8LYV"
 #SPREADSHEET_ID = "1tlkV018ijrKsJVNUOyz-cusBYRY2-shVNECC8g9Tu1Y"
 
+#The Shamrocks
+#clanTag = "8R9VQQ8Q"
+#SPREADSHEET_ID = "170i6nXjqdALylhcu_ufGZCKylefI3eidQcbqoFOOEZM"
 
 
 columns_per_CWL = 5
@@ -72,18 +94,9 @@ def update_settings():
         sheetSettings[settingNames[i]] = settingValues[i]
     raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
 
-def entire_row(row):
-    return f"{row}:{row}"
+
 def entire_column(column):
     return f"{column}:{column}"
-
-
-def cell_range_row():
-    pass
-
-
-def cell_range_column(column,start,end,offset):
-    return f"{column}{start+offset}:{column}{end+offset}"
 
 def column_to_number(columnNum):
     result = []
