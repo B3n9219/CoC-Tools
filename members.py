@@ -8,8 +8,12 @@ import spreadsheet as sheet
 def get_clan_members_json_info():
     requestURL = clanRequestURL + clanTag + "/members"
     response = requests.get(requestURL, headers={"Authorization": "Bearer " + apiKey})
-    #print(response.json())
-    clanMemberInfo = response.json()["items"]
+    if not "items" in response.json():
+        clanMemberInfo = response.json()["items"]
+    else:
+        print(f"request URL: {requestURL}, status code: {response.status_code}, json: {response.json()}")
+        clanMemberInfo = None
+
     return clanMemberInfo
 
 
