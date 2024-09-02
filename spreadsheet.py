@@ -90,7 +90,7 @@ def read_range(cellRange, sheet):
         )
         if "values" in result:
             rows = result["values"]
-            print(f"{len(rows)} rows retrieved from cell range {fullRange}")
+            #print(f"{len(rows)} rows retrieved from cell range {fullRange}")
             # Flatten the list of lists into a single list
             result = [word for sublist in rows for word in sublist]
         else:

@@ -29,7 +29,6 @@ def update_raid_sheet():
     players_in_clan = util.get_players_in_clan()
     start_date, api_raid_state, player_raid_info = filter_raid_info()
     info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_raid_info,"Raid", 0)
-    print(info_to_add)
     column_title, update_column = util.prepare_attack_column_title("Raid Weekend", start_date, sheetSettings["raidWeekendsAdded"], capitalSheet)
     try:
         sheet_raid_state = sheet.read_range(f"{update_column}2", capitalSheet)[0].split(":")[1].strip()

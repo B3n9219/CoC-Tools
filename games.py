@@ -10,7 +10,6 @@ def get_clan_games_json_info():
         player_tag = player.tag[1:] #removing the '#' from the start of the tag
         requestURL = playerRequestURL + player_tag + "/stats"
         response = requests.get(requestURL)
-        print(response.status_code)
         if response.status_code == 200:
             json_info.append((response.json(),True))
         else:
@@ -27,10 +26,8 @@ def get_clan_games_info():
     update_date_str = str(updateDate)[:7]
     json_info = get_clan_games_json_info()
     clan_games_participants = []
-    util.print_json(json_info)
     for player_info in json_info:
         player_stats = player_info[0]
-        util.print_json(player_info)
         player = Player(name=player_stats["name"], tag=player_stats["tag"])
         try:
             player.games_score = player_stats["clan_games"][update_date_str]["points"]
@@ -49,10 +46,8 @@ def get_clan_games_info():
 
 def update_games_sheet():
     players_in_sheet = util.get_players_in_sheet(clanGamesSheet)
-    print(players_in_sheet)
     players_in_clan = util.get_players_in_clan()
     start_date, player_games_info = get_clan_games_info()
-    print(start_date)
     info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, player_games_info,"Games", 0)
     column_title, update_column = util.prepare_attack_column_title("Clan Games", start_date, sheetSettings["clanGamesAdded"], clanGamesSheet)
     util.add_attack_info_to_sheet(info_to_add, column_title, update_column, clanGamesSheet)

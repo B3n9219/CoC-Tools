@@ -58,7 +58,7 @@ def prepare_attack_column_title(attack_type, start_date, column_filled_count, up
     column_index, column_title = find_last_filled_column(update_sheet)
     column_letter = column_to_number(column_index)
     freeColumn = find_next_free_column(update_sheet)
-    print("Filled column",column_letter,"Free colum :",freeColumn)
+    #print("Filled column",column_letter,"Free colum :",freeColumn)
     currentEntryNum = int(column_filled_count)
     entryTitle = f"{attack_type} {currentEntryNum} \n {start_date}"
     # print(f"raid title {entryTitle}  lastFilled weekend = {column_title}")
@@ -73,7 +73,7 @@ def prepare_attack_column_title(attack_type, start_date, column_filled_count, up
 
 
 def add_attack_info_to_sheet(attack_info_to_add, entry_title, update_column, updateSheet, additional_offset = 0):
-    print(attack_info_to_add)
+    #print(attack_info_to_add)
     sheet.update_cell(f"{update_column}{1+additional_offset}", entry_title, updateSheet)
     sheet.batch_update_cells(
         f"{update_column}{title_row_offset+1}:{update_column}{len(attack_info_to_add) + title_row_offset + additional_offset}",

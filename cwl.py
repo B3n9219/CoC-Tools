@@ -9,9 +9,6 @@ def get_CWL_info():
     start_date = "2024-08"
     requestURL = f"{baseRequest}/cwl/%23{clanTag}/{start_date}"
     response = requests.get(requestURL)
-    print(requestURL)
-    print("valid url: https://api.clashking.xyz/cwl/%232RLQPCVO8/2024-08")
-    print(response.status_code)
     if response.status_code == 200:
         info = response.json()["rounds"]
         player_attack_info = {}
@@ -19,7 +16,6 @@ def get_CWL_info():
         for round in info:
             roundNum = info.index(round) + 1
             clan_info = []
-            #util.print_json(item_path)
             for clan in round["warTags"]:
                 if clan["clan"]["tag"] == f"#{clanTag}":
                     #print("1ST", clan["startTime"][:8], clan["clan"]["name"])
@@ -28,7 +24,6 @@ def get_CWL_info():
                     #print("2ND", clan["startTime"][:8], clan["opponent"]["name"])
                     clan_info.append(clan["opponent"]["members"])
             for attack_info in clan_info:
-                util.print_json(attack_info)
                 for player_info in attack_info:
                     stars_earned = 0
                     attacks_used = 0
@@ -49,9 +44,7 @@ def get_CWL_info():
                         player_attack_info[player_info["tag"]] = [player_info["name"], stars_earned, attacks_used,
                                                                   attacks_available]
         for info in list(player_attack_info.items()):
-            print(info)
             player = Player(tag=info[0],name=info[1][0],cwl_stars=info[1][1], cwl_attacks_used=info[1][2], cwl_attacks_available=info[1][3])
-            print(f"name:{player.name} tag:{player.tag} cwl_stars:{player.cwl_stars} cwl_attacks_used{player.cwl_attacks_used} avaialable:{player.cwl_attacks_available}")
             player_list.append(player)
         return start_date, player_list, True
     else:

@@ -6,7 +6,6 @@ import re
 
 def get_ck_war_info():
     requestURL = f"{baseRequest}/war/%23{clanTag}/previous?limit=3"
-    print(requestURL)
     response = requests.get(requestURL)
     info = response.json()
     war_statuses = {}
@@ -23,7 +22,6 @@ def find_war_endpoint(war):
 
 
 def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_war_statuses):
-    print(api_war_statuses)
     sheet_war_titles = sheet.read_range("1:1", warSheet)
     sheet_war_statuses = sheet.read_range("2:2", warSheet)[war_info_columns:]
     pattern = r'\d{2}/\d{2}/\d{4}'
@@ -46,7 +44,6 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
                         update_column = column_to_number(update_column)
                         title = sheet_war_titles[i+war_info_columns].split('\n')[0] + '\n'
                         title = f"{title}{sheet_war_dates[i]}"
-                        print(war_attack_info)
                         add_war_to_sheet(players_in_sheet,players_in_clan,war_attack_info, update_column, title, api_war_statuses[sheet_war_dates[i]])
 
 
@@ -56,11 +53,9 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
 def get_recent_war_info():
     requestURL = clanRequestURL + clanTag + "/currentwar"
     response = requests.get(requestURL, headers={"Authorization": "Bearer " + apiKey})
-    #print(response.json())
     info = response.json()
     if response.status_code == 200:
         war_state = info["state"]
-        print("WAR STATE:",war_state)
         if war_state != "notInWar":
             startDate = info["startTime"]
             clanMemberInfo = info["clan"]["members"]
