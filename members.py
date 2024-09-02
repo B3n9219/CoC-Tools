@@ -1,6 +1,7 @@
 from settings import *
 from player import *
 import requests
+import utilities as util
 import spreadsheet as sheet
 
 
@@ -23,7 +24,7 @@ def get_players_in_clan():
 
 
 def get_players_in_sheet():
-    playerNames = sheet.read_range(entire_column(nameColumn),memberSheet)
+    playerNames = sheet.read_range(entire_column(nameColumn), memberSheet)
     playerTags = sheet.read_range(entire_column(tagColumn),memberSheet)
     playerClanStatus = sheet.read_range(entire_column(clanStatusColumn),memberSheet)
     playerNum = max(len(playerNames),len(playerTags))
@@ -40,7 +41,6 @@ def get_next_free_row(column, playersInSheet = None):
         playersInSheet = get_players_in_sheet()
     rows_occupied = len(playersInSheet)
     next_free_row = rows_occupied + title_row_offset + 1
-    print("next free row", next_free_row)
     return next_free_row
 
 

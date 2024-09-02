@@ -20,6 +20,7 @@ def convert_json_time_to_date(time):
     return formated_date
 
 
+
 def find_last_filled_column(check_sheet):
     columnsFilled = sheet.read_range("1:1", check_sheet)
     column_title = columnsFilled[-1]
@@ -96,7 +97,6 @@ def trim_players_in_sheet(players):
     while players[i].tag[0] != "#":
         i += 1
     return players[i:]
-
 
 
 def get_players_in_clan():

@@ -10,6 +10,43 @@ baseRequest = "https://api.clashking.xyz"
 playerRequestURL = f"{baseRequest}/player/%23"  #followed by player tag (no #)
 clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
 
+
+columns_per_CWL = 5
+CWL_info_columns = 7
+war_info_columns = 6
+
+title_row_offset = 2
+
+#SPREADSHEET SHEET NAMES
+memberSheet = "MEMBERS"
+capitalSheet = "RAIDS"
+settingsSheet = "SETTINGS"
+warSheet = "WAR"
+clanGamesSheet = "CLAN GAMES"
+cwlSheet = "CWL"
+
+#SPREADSHEET COLUMNS
+nameColumn = "A"
+tagColumn = "B"
+clanStatusColumn = "C"
+roleColumn = "D"
+THLevelColumn = "E"
+
+settingNameColumn = "A"
+settingValueColumn = "B"
+
+#Settings updated by spreadsheet
+sheetSettings = {}
+raidWeekendsAdded = []
+def update_settings():
+    global raidWeekendsAdded
+    settingNames = sheet.read_range(entire_column(settingNameColumn),settingsSheet)
+    settingValues = sheet.read_range(entire_column(settingValueColumn), settingsSheet)
+    for i in range (0,len(settingNames)):
+        sheetSettings[settingNames[i]] = settingValues[i]
+    raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
+
+
 def get_command_line_inputs():
     parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
     parser.add_argument('tag', type=str, help='A tag (string input, no #)')
@@ -26,6 +63,18 @@ def get_command_line_inputs():
 
 
 clanTag, SPREADSHEET_ID = get_command_line_inputs()
+
+
+def entire_column(column):
+    return f"{column}:{column}"
+
+
+def column_to_number(columnNum):
+    result = []
+    while columnNum > 0:
+        columnNum, remainder = divmod(columnNum - 1, 26)
+        result.append(chr(remainder + ord('A')))
+    return ''.join(reversed(result))
 
 
 #The Fireflies:
@@ -55,52 +104,3 @@ clanTag, SPREADSHEET_ID = get_command_line_inputs()
 #The Shamrocks
 #clanTag = "8R9VQQ8Q"
 #SPREADSHEET_ID = "170i6nXjqdALylhcu_ufGZCKylefI3eidQcbqoFOOEZM"
-
-
-columns_per_CWL = 5
-CWL_info_columns = 7
-war_info_columns = 6
-
-title_row_offset = 2
-
-#SPREADSHEET SHEET NAMES
-memberSheet = "MEMBERS"
-capitalSheet = "RAIDS"
-settingsSheet = "SETTINGS"
-warSheet = "WAR"
-clanGamesSheet = "CLAN GAMES"
-cwlSheet = "CWL"
-
-#SPREADSHEET COLUMNS
-nameColumn = "A"
-tagColumn = "B"
-clanStatusColumn = "C"
-roleColumn = "D"
-THLevelColumn = "E"
-
-settingNameColumn = "A"
-settingValueColumn = "B"
-
-#Settings updated by spreadsheet
-sheetSettings = {}
-raidWeekendsAdded = []
-
-
-def update_settings():
-    global raidWeekendsAdded
-    settingNames = sheet.read_range(entire_column(settingNameColumn),settingsSheet)
-    settingValues = sheet.read_range(entire_column(settingValueColumn), settingsSheet)
-    for i in range (0,len(settingNames)):
-        sheetSettings[settingNames[i]] = settingValues[i]
-    raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
-
-
-def entire_column(column):
-    return f"{column}:{column}"
-
-def column_to_number(columnNum):
-    result = []
-    while columnNum > 0:
-        columnNum, remainder = divmod(columnNum - 1, 26)
-        result.append(chr(remainder + ord('A')))
-    return ''.join(reversed(result))
