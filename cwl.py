@@ -6,7 +6,6 @@ from player import *
 
 def get_CWL_info():
     start_date = str(currentDate)[:7]
-    start_date = "2024-08"
     requestURL = f"{baseRequest}/cwl/%23{clanTag}/{start_date}"
     response = requests.get(requestURL)
     if response.status_code == 200:
@@ -68,6 +67,7 @@ def update_cwl_sheet():
     players_in_sheet = util.get_players_in_sheet(cwlSheet)
     players_in_clan = util.get_players_in_clan()
     start_date, player_cwl_info, info_found = get_CWL_info()
+    print(player_cwl_info)
     if info_found:
         entry_title, update_column = select_cwl_update_column(start_date)
 

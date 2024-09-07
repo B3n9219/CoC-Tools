@@ -83,7 +83,6 @@ def column_to_number(columnNum):
 
 #The Fireflies 2:
 #clanTag = "2RLQPCVO8"
-#SPREADSHEET_ID = "1i4axEHp1-1PTHNJ_NKNb5ZMH58_ljz08feGyKRZofro"
 
 #The Bureau
 #clanTag = "2G0RLQ9J0"
