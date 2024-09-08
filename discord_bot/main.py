@@ -27,16 +27,10 @@ async def on_ready() -> None:
         print(e)
 
 
-@bot.tree.command(name="hello")
-async def hello(interaction: discord.Interaction):
-    await interaction.response.send_message(f"Hey {interaction.user.mention}",
-                                            ephemeral=True)
-
-
 @bot.tree.command(name="add_clan")
 @app_commands.describe(tag="clan tag")
 async def display_clan(interaction: discord.Interaction, tag: str):
-    await interaction.response.send_message(f"{interaction.user.mention}'s clan is {tag}")
+    await interaction.response.send_message(f"{interaction.user.mention}'s clan is {tag}", ephemeral=True)
 
 
 # MAIN CODE
