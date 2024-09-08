@@ -1,5 +1,3 @@
-import requests
-import spreadsheet as sheet
 import members
 from settings import *
 import capital
