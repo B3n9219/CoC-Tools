@@ -1,53 +1,47 @@
 from typing import Final
 import os
 from dotenv import load_dotenv
-from discord import Intents, Client, Message
-from responses import get_response
+import discord
+from discord import app_commands
+from discord.ext import commands
+
 
 # STEP 0: LOAD TOKEN FROM SOMEWHERE SAFE
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 
 # STEP 1: BOT SETUP
-intents: Intents = Intents.default()
+intents: discord.Intents = discord.Intents.default()
 intents.message_content = True   # NOQA
-client: Client = Client(intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-# STEP 2: MESSAGE FUNCTIONALITY
-async def send_message(message: Message, user_message: str) -> None:
-    if not user_message:
-        print("(Message was empty because intent were not enabled probably)")
-        return
 
-    if is_private := user_message[0] == '?':
-        user_message = user_message[1:]
-
+# STEP 2: HANDLING THE STARTUP FOR THE BOT:
+@bot.event
+async def on_ready() -> None:
+    print(f"{bot.user} is now running!")
     try:
-        response: str = get_response(user_message)
-        await message.author.send(response) if is_private else await message.channel.send(response)
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
     except Exception as e:
         print(e)
 
-# STEP 3: HANDLING THE STARTUP FOR THE BOT:
-@client.event
-async def on_ready() -> None:
-    print(f"{client.user} is now running!")
 
-#STEP 4: HANDLING INCOMING MESSAGES
-@client.event
-async def on_message(message: Message) -> None:
-    if message.author == client.user:
-        return
-    username: str = str(message.author)
-    user_message: str = message.content
-    channel: str = str(message.channel)
+@bot.tree.command(name="hello")
+async def hello(interaction: discord.Interaction):
+    await interaction.response.send_message(f"Hey {interaction.user.mention}",
+                                            ephemeral=True)
 
-    print(f"[{channel}] {username}: '{user_message}''")
-    await send_message(message, user_message)
 
-# STEP 5: MAIN ENTRY POINT
+@bot.tree.command(name="add_clan")
+@app_commands.describe(tag="clan tag")
+async def display_clan(interaction: discord.Interaction, tag: str):
+    await interaction.response.send_message(f"{interaction.user.mention}'s clan is {tag}")
+
+
+# MAIN CODE
 def main() -> None:
-    client.run(token=TOKEN)
+    bot.run(token=TOKEN)
 
 
 if __name__ == "__main__":
