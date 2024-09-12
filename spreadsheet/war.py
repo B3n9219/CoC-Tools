@@ -3,6 +3,7 @@ from settings import *
 import utilities as util
 from player import *
 import re
+import spreadsheet as sheet
 
 def get_ck_war_info():
     requestURL = f"{baseRequest}/war/%23{clanTag}/previous?limit=3"

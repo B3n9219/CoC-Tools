@@ -2,6 +2,8 @@ import requests
 from settings import *
 import utilities as util
 from player import *
+import spreadsheet as sheet
+
 
 def get_clan_games_json_info():
     players_in_clan = util.get_players_in_clan()

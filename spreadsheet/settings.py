@@ -1,4 +1,3 @@
-import spreadsheet as sheet
 from datetime import *
 from dateutil.relativedelta import relativedelta
 import argparse
@@ -38,13 +37,17 @@ settingValueColumn = "B"
 #Settings updated by spreadsheet
 sheetSettings = {}
 raidWeekendsAdded = []
-def update_settings():
+
+clanTag, SPREADSHEET_ID = '2R989CY89', '1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw'
+
+def update_settings(sheet_settings):
     global raidWeekendsAdded
-    settingNames = sheet.read_range(entire_column(settingNameColumn),settingsSheet)
-    settingValues = sheet.read_range(entire_column(settingValueColumn), settingsSheet)
+    settingNames = sheet_settings[0]
+    settingValues = sheet_settings[1]
     for i in range (0,len(settingNames)):
         sheetSettings[settingNames[i]] = settingValues[i]
     raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
+
 
 
 def get_command_line_inputs():
@@ -62,7 +65,7 @@ def get_command_line_inputs():
     return tag, sheet_ID
 
 
-clanTag, SPREADSHEET_ID = get_command_line_inputs()
+#clanTag, SPREADSHEET_ID = get_command_line_inputs()
 
 
 def entire_column(column):

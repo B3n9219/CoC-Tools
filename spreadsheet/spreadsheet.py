@@ -14,18 +14,29 @@ from googleapiclient.errors import HttpError
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 def get_credentials():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(script_dir)
+
+    token_path = os.path.join(parent_dir, "token.json")
+    credentials_path = os.path.join(parent_dir, "credentials.json")
     credentials = None
-    if os.path.exists("token.json"):
-        credentials = Credentials.from_authorized_user_file("token.json", SCOPES)
+    if os.path.exists(token_path):
+        credentials = Credentials.from_authorized_user_file(token_path, SCOPES)
     if not credentials or not credentials.valid:
         if credentials and credentials.expired and credentials.refresh_token:
             credentials.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
             credentials = flow.run_local_server(port=0)
-        with open("token.json", "w") as token:
+        with open(token_path, "w") as token:
             token.write(credentials.to_json())
     return credentials
+
+def get_sheet_settings():
+    settingNames = read_range(entire_column(settingNameColumn), settingsSheet)
+    settingValues = read_range(entire_column(settingValueColumn), settingsSheet)
+    return (settingNames, settingValues)
+
 
 
 creds = get_credentials()

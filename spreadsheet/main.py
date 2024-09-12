@@ -4,10 +4,11 @@ import capital
 import war
 import games
 import cwl
+import spreadsheet as sheet
 
 
-
-update_settings()
+sheet_settings = sheet.get_sheet_settings()
+update_settings(sheet_settings)
 members.update_member_sheet()
 
 war.update_war_sheet()
