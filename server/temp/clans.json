@@ -1,8 +1,14 @@
 {
-    "#2332": {
-        "tag": "#2332",
-        "clan_name": "TEST",
-        "sheet_id": null,
-        "server_id": null
+    "#2R989CY89": {
+        "tag": "#2R989CY89",
+        "clan_name": "The Fireflies",
+        "sheet_id": "1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA",
+        "server_id": 1278471624286277672
+    },
+    "#2RLQPCVO8": {
+        "tag": "#2RLQPCVO8",
+        "clan_name": "The Fireflies 2",
+        "sheet_id": "1L6SblCaXfwTfRR8R0Q-iME9ujhS_L-KA122KeOStKLk",
+        "server_id": 1278471624286277672
     }
 }

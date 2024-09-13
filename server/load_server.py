@@ -28,12 +28,18 @@ def convert_file_to_dict():
 
 def create_clan_spreadsheet(clan_info, clans_on_server):
     if clan_info.tag in clans_on_server:
-        if clans_on_server[clan_info.tag]["sheet_id"] == 5:
+        if clans_on_server[clan_info.tag]["sheet_id"] == None:
+            print("clan has been added but no spreadsheet")
+            print("Creating spreadsheet...")
             sheet_id = sheet.make_spreadsheet(clan_info.clan_name)
             clan_info.sheet_id = sheet_id
+        else:
+            clan_info.sheet_id = clans_on_server[clan_info.tag]["sheet_id"]
     else:
+        print("Creating spreadsheet...")
         sheet_id = sheet.make_spreadsheet(clan_info.clan_name)
         clan_info.sheet_id = sheet_id
+    print(clan_info.sheet_id)
     return clan_info
 
 
@@ -69,5 +75,5 @@ def add_clan_to_server(clan_info):
 
     print("Data appended and uploaded successfully.")
 
-clan = ClanInfo(tag="#2332", clan_name="TEST", sheet_id=None)
-add_clan_to_server(clan)
+#clan = ClanInfo(tag="#2R989CY89", clan_name="The fireflies", sheet_id=None)
+#add_clan_to_server(clan)

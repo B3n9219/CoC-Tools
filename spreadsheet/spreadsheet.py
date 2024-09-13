@@ -1,16 +1,15 @@
-from spreadsheet.settings import *
+from settings import *
 
 import os
 import re
 
-import google.auth
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib  .flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets", 'https://www.googleapis.com/auth/drive']
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets", 'https://www.googleapis.com/auth/drive.file']
 
 def get_credentials():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -178,6 +177,3 @@ def make_spreadsheet(sheet_title):
     except HttpError as error:
         print(f"An error occurred: {error}")
         return None
-
-
-make_spreadsheet("TEMPLATE")

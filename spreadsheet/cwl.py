@@ -1,5 +1,4 @@
 import requests
-import json
 from settings import *
 import utilities as util
 from player import *

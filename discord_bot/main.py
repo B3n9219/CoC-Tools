@@ -1,5 +1,5 @@
 import requests
-from spreadsheet.settings import *
+from settings import *
 
 
 def check_if_clan_exists(tag):

@@ -1,7 +1,6 @@
 from settings import *
 from player import *
 import requests
-import utilities as util
 import spreadsheet as sheet
 
 
