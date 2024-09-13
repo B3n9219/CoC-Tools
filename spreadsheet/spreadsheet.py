@@ -1,5 +1,4 @@
-from settings import *
-import utilities as util
+from spreadsheet.settings import *
 
 import os
 import re
@@ -11,7 +10,7 @@ from google_auth_oauthlib  .flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets", 'https://www.googleapis.com/auth/drive']
 
 def get_credentials():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -41,6 +40,7 @@ def get_sheet_settings():
 
 creds = get_credentials()
 service = build("sheets", "v4", credentials=creds)
+drive_service = build('drive', 'v3', credentials=creds)
 sheets = service.spreadsheets()
 
 
@@ -153,3 +153,31 @@ def merge_cells(start_row, end_row, start_column, end_column, sheet_name):
     print(f"Cells merged in sheet ID {sheet_id}, range {start_row}:{end_row} - {start_column}:{end_column}")
 
 
+def make_spreadsheet(sheet_title):
+    try:
+        drive_service = build('drive', 'v3', credentials=creds)
+
+        # Metadata for the new copy
+        file_metadata = {
+            'name': sheet_title,  # Title of the new spreadsheet
+            'parents': [spreadsheet_folder_id],  # Folder ID where the new file should be placed
+        }
+
+        # Copy the template file
+        copied_file = drive_service.files().copy(
+            fileId=template_id,
+            body=file_metadata
+        ).execute()
+
+        # Get the new file ID and print it
+        new_file_id = copied_file.get('id')
+        print(f"Spreadsheet {sheet_title} made successfully! Spreadsheet ID: {new_file_id}")
+
+        return new_file_id
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return None
+
+
+make_spreadsheet("TEMPLATE")

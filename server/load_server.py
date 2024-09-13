@@ -2,6 +2,8 @@ import os
 from google.cloud import storage
 from server.ClanInfo import *
 import json
+import spreadsheet.spreadsheet as sheet
+from server.service_key import *
 
 #serviceKey_folder = r"G:\.shortcut-targets-by-id\0BxLsm2sliUVxS3JlODdPbFFwOEU\Ben\Clan Management Sheet\SSH Keys"
 #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(serviceKey_folder, 'ServiceKey_GoogleCloud.json')
@@ -24,15 +26,24 @@ def convert_file_to_dict():
     return clan_info_dict
 
 
+def create_clan_spreadsheet(clan_info, clans_on_server):
+    if clan_info.tag in clans_on_server:
+        if clans_on_server[clan_info.tag]["sheet_id"] == 5:
+            sheet_id = sheet.make_spreadsheet(clan_info.clan_name)
+            clan_info.sheet_id = sheet_id
+    else:
+        sheet_id = sheet.make_spreadsheet(clan_info.clan_name)
+        clan_info.sheet_id = sheet_id
+    return clan_info
+
+
 def add_clan_to_server(clan_info):
     # Initialize the client
     client = storage.Client()
     bucket = client.bucket(coc_tools_bucket_name)
     blob = bucket.blob(clan_file)
 
-    clan_info_dict = clan_info.to_dict()
-    print("DICT",clan_info_dict)
-    clan_dict = {clan_info.tag: clan_info_dict}
+
 
 
     # Step 1: Download the existing blob content
@@ -42,12 +53,13 @@ def add_clan_to_server(clan_info):
     with open(local_file_path, 'r') as file:
         json_text = file.read()
     clans_on_server = json.loads(json_text)
-    print("current",clans_on_server)
 
-    clans_on_server[clan_info.tag] = clan_dict   #adding the new clan to the dictionary of clans on the server
-    print("new", clans_on_server)
+    clan_info = create_clan_spreadsheet(clan_info, clans_on_server)
+    clan_info_dict = clan_info.to_dict()
+    #clan_dict = {clan_info.tag: clan_info_dict}
+
+    clans_on_server[clan_info.tag] = clan_info_dict   #adding the new clan to the dictionary of clans on the server
     json_to_add = json.dumps(clans_on_server, indent=4)
-    print(json_to_add)
     # Step 2: Append the new data locally
     with open(local_file_path, 'w') as file:
         file.write(json_to_add)
@@ -57,5 +69,5 @@ def add_clan_to_server(clan_info):
 
     print("Data appended and uploaded successfully.")
 
-
-
+clan = ClanInfo(tag="#2332", clan_name="TEST", sheet_id=None)
+add_clan_to_server(clan)

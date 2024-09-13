@@ -9,6 +9,8 @@ baseRequest = "https://api.clashking.xyz"
 playerRequestURL = f"{baseRequest}/player/%23"  #followed by player tag (no #)
 clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
 
+template_id = "1mnlquv54_uJrtR_FXwLlZhiM9lskqSwSbP-pBW2uN6A"
+spreadsheet_folder_id = "144M0p8QWLOiaZbgNp7u3x-aVnqGi-6FY"
 
 columns_per_CWL = 5
 CWL_info_columns = 7
