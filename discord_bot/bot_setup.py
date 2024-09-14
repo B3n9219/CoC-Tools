@@ -4,7 +4,10 @@ from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
-serviceKey_folder = r"G:\.shortcut-targets-by-id\0BxLsm2sliUVxS3JlODdPbFFwOEU\Ben\Clan Management Sheet\SSH Keys"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+serviceKey_folder = r"\creds"
+#print(os.path.join(parent_dir, r'creds\ServiceKey_GoogleCloud.json'))
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(serviceKey_folder, 'ServiceKey_GoogleCloud.json')
 
 # Load environment variables

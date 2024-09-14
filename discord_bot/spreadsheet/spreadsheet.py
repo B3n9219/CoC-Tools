@@ -14,9 +14,10 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets", 'https://www.googleapi
 def get_credentials():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(script_dir)
+    project_dir = os.path.dirname(parent_dir)
 
-    token_path = os.path.join(parent_dir, "token.json")
-    credentials_path = os.path.join(parent_dir, "credentials.json")
+    token_path = os.path.join(project_dir, r"creds\token.json")
+    credentials_path = os.path.join(project_dir, r"creds\credentials.json")
     credentials = None
     if os.path.exists(token_path):
         credentials = Credentials.from_authorized_user_file(token_path, SCOPES)
