@@ -74,6 +74,7 @@ def add_clan_to_server(clan_info):
     blob.upload_from_filename(local_file_path)
 
     print("Data appended and uploaded successfully.")
+    return clan_info
 
 #clan = ClanInfo(tag="#2R989CY89", clan_name="The fireflies", sheet_id=None)
 #add_clan_to_server(clan)
