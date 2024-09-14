@@ -1,9 +1,7 @@
 import requests
-from settings import *
-import utilities as util
-from player import *
-import spreadsheet as sheet
-
+from discord_bot.settings import *
+from discord_bot.spreadsheet.player import *
+from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
 
 
 def get_raid_weekend_info():

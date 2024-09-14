@@ -1,7 +1,8 @@
 import requests
-from settings import *
-import utilities as util
-from player import *
+from discord_bot.settings import *
+from discord_bot.spreadsheet import utilities as util
+from discord_bot.spreadsheet.player import *
+from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
 
 def get_CWL_info():
     start_date = str(currentDate)[:7]

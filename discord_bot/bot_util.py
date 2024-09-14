@@ -1,5 +1,5 @@
 import requests
-from settings import *
+from discord_bot.settings import *
 
 
 def check_if_clan_exists(tag):

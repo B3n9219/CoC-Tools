@@ -1,6 +1,6 @@
-from settings import *
+from discord_bot.settings import *
 from player import *
-import spreadsheet as sheet
+from discord_bot.spreadsheet import spreadsheet as sheet
 import requests
 import json
 

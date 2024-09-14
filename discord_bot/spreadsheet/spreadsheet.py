@@ -1,4 +1,4 @@
-from settings import *
+from discord_bot.settings import *
 
 import os
 import re

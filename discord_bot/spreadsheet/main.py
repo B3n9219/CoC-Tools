@@ -1,11 +1,6 @@
-import members
-from settings import *
-import capital
-import war
-import games
-import cwl
-import spreadsheet as sheet
-
+from discord_bot.spreadsheet.sheets import members, war, capital, games, cwl
+from discord_bot.spreadsheet import spreadsheet as sheet
+from discord_bot.settings import *
 
 sheet_settings = sheet.get_sheet_settings()
 update_settings(sheet_settings)

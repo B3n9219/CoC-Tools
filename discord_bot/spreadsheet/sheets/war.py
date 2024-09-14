@@ -1,9 +1,9 @@
 import requests
-from settings import *
-import utilities as util
-from player import *
+from discord_bot.settings import *
+from discord_bot.spreadsheet.player import *
 import re
-import spreadsheet as sheet
+from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
+
 
 def get_ck_war_info():
     requestURL = f"{baseRequest}/war/%23{clanTag}/previous?limit=3"

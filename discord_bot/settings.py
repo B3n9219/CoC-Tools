@@ -40,7 +40,7 @@ settingValueColumn = "B"
 sheetSettings = {}
 raidWeekendsAdded = []
 
-clanTag, SPREADSHEET_ID = '2R989CY89', '1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw'
+clanTag, SPREADSHEET_ID = '2R989CY89', '1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA'
 
 def update_settings(sheet_settings):
     global raidWeekendsAdded
