@@ -1,4 +1,6 @@
 import os
 
-serviceKey_folder = r"G:\.shortcut-targets-by-id\0BxLsm2sliUVxS3JlODdPbFFwOEU\Ben\Clan Management Sheet\SSH Keys"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(serviceKey_folder, 'ServiceKey_GoogleCloud.json')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+project_dir = os.path.dirname(parent_dir)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(project_dir, 'creds', 'ServiceKey_GoogleCloud.json')

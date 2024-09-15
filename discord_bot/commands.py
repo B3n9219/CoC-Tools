@@ -4,7 +4,10 @@ import discord_bot.server.load_server as server
 from discord_bot.server.ClanInfo import *
 import discord
 from bot_util import *
+import os
 
+
+print("commands", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
 
 def is_tag_in_clan_list(entered_tag: str) -> bool:
@@ -20,7 +23,6 @@ def setup_commands(bot: commands.Bot) -> None:
     @bot.tree.command(name="add_clan")
     @app_commands.describe(tag="clan tag")
     async def display_clan(interaction: discord.Interaction, tag: str):
-        #print("CLAN EXISTS:", check_if_clan_exists(tag[1:]))
         if check_if_clan_exists(tag[1:]) == True:
             clan_name = get_clan_name(tag[1:])
             clan = ClanInfo(tag=tag, clan_name=clan_name, sheet_id=None, server_id=interaction.guild_id)

@@ -3,7 +3,7 @@ import json
 from discord_bot.spreadsheet import spreadsheet as sheet
 from discord_bot.server.service_key import *
 
-
+print("server",os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 storage_client = storage.Client()
 coc_tools_bucket_name = 'coc-tools-files'
 clan_file = 'clans.json'

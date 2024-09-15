@@ -4,12 +4,7 @@ from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)
-#print(os.path.join(parent_dir, r'creds\ServiceKey_GoogleCloud.json'))
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(parent_dir, 'creds', 'ServiceKey_GoogleCloud.json')
 
-# Load environment variables
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 
