@@ -16,8 +16,8 @@ def get_credentials():
     parent_dir = os.path.dirname(script_dir)
     project_dir = os.path.dirname(parent_dir)
 
-    token_path = os.path.join(project_dir, r"creds\token.json")
-    credentials_path = os.path.join(project_dir, r"creds\credentials.json")
+    token_path = os.path.join(project_dir, os.path.join("creds", "token.json"))
+    credentials_path = os.path.join(project_dir, os.path.join("creds", "credentials.json"))
     credentials = None
     if os.path.exists(token_path):
         credentials = Credentials.from_authorized_user_file(token_path, SCOPES)
