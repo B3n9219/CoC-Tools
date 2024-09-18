@@ -1,6 +1,17 @@
+import sys
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+project_dir = os.path.dirname(parent_dir)
+# Add the project root directory to sys.path
+
+sys.path.append(project_dir)
+
 from discord_bot.spreadsheet.sheets import members, war, capital, games, cwl
 from discord_bot.spreadsheet import spreadsheet as sheet
 from discord_bot.settings import *
+
 
 sheet_settings = sheet.get_sheet_settings()
 update_settings(sheet_settings)

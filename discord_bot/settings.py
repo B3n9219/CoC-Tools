@@ -40,7 +40,6 @@ settingValueColumn = "B"
 sheetSettings = {}
 raidWeekendsAdded = []
 
-clanTag, SPREADSHEET_ID = '2R989CY89', '1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA'
 
 def update_settings(sheet_settings):
     global raidWeekendsAdded
@@ -49,6 +48,7 @@ def update_settings(sheet_settings):
     for i in range (0,len(settingNames)):
         sheetSettings[settingNames[i]] = settingValues[i]
     raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
+
 
 
 
@@ -66,8 +66,8 @@ def get_command_line_inputs():
     print(f"ID: {sheet_ID}")
     return tag, sheet_ID
 
-
-#clanTag, SPREADSHEET_ID = get_command_line_inputs()
+#clanTag, SPREADSHEET_ID = '2R989CY89', '1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA'
+clanTag, SPREADSHEET_ID = get_command_line_inputs()
 
 
 def entire_column(column):
