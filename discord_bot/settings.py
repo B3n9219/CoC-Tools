@@ -50,7 +50,7 @@ def update_settings(sheet_settings):
     raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
 
 
-
+clanTag, SPREADSHEET_ID = "", ""
 
 def get_command_line_inputs():
     parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
@@ -64,10 +64,12 @@ def get_command_line_inputs():
     # Output the stored variables (optional)
     print(f"Tag: {tag}")
     print(f"ID: {sheet_ID}")
-    return tag, sheet_ID
+    clanTag = tag
+    sheet_ID = sheet_ID
+    #return tag, sheet_ID
 
 #clanTag, SPREADSHEET_ID = '2R989CY89', '1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA'
-clanTag, SPREADSHEET_ID = get_command_line_inputs()
+#clanTag, SPREADSHEET_ID = get_command_line_inputs()
 
 
 def entire_column(column):

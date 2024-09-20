@@ -14,6 +14,7 @@ from discord_bot.settings import *
 
 
 sheet_settings = sheet.get_sheet_settings()
+clanTag, SPREADSHEET_ID = get_command_line_inputs()
 update_settings(sheet_settings)
 members.update_member_sheet()
 
