@@ -1,6 +1,8 @@
 import requests
-from discord_bot.settings import *
+#from discord_bot.settings import *
 
+baseRequest = "https://api.clashking.xyz"
+clanRequestURL = f"{baseRequest}/v1/clans/%23"
 
 def check_if_clan_exists(tag):
     requestURL = f"{clanRequestURL}{tag}"
