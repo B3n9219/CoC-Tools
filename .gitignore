@@ -2,3 +2,5 @@
 /workspace.xml
 /creds/
 /discord_bot/server/temp
+discord_bot/.env
+discord_bot/spreadsheet/dist
