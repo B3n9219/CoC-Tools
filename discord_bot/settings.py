@@ -39,6 +39,8 @@ settingValueColumn = "B"
 #Settings updated by spreadsheet
 sheetSettings = {}
 raidWeekendsAdded = []
+clanTag, SPREADSHEET_ID = '2QCQV9CYY', '1RtOi3D-DRc9dU9ChQtKo2sFHUETRajUcN1Cm1JGQv94'
+#clanTag, SPREADSHEET_ID = "", ""
 
 
 def update_settings(sheet_settings):
@@ -50,7 +52,6 @@ def update_settings(sheet_settings):
     raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
 
 
-clanTag, SPREADSHEET_ID = "", ""
 
 def get_command_line_inputs():
     parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
