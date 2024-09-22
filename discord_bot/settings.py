@@ -39,8 +39,8 @@ settingValueColumn = "B"
 #Settings updated by spreadsheet
 sheetSettings = {}
 raidWeekendsAdded = []
-clanTag, SPREADSHEET_ID = '2QCQV9CYY', '1RtOi3D-DRc9dU9ChQtKo2sFHUETRajUcN1Cm1JGQv94'
-#clanTag, SPREADSHEET_ID = "", ""
+#clanTag, SPREADSHEET_ID = '2QCQV9CYY', '1RtOi3D-DRc9dU9ChQtKo2sFHUETRajUcN1Cm1JGQv94'
+clanTag, SPREADSHEET_ID = "", ""
 
 
 def update_settings(sheet_settings):
@@ -54,20 +54,28 @@ def update_settings(sheet_settings):
 
 
 def get_command_line_inputs():
-    parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
-    parser.add_argument('tag', type=str, help='A tag (string input, no #)')
-    parser.add_argument('ID', type=str, help='Your sheet ID (string input)')
+    global clanTag, SPREADSHEET_ID
+    #parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
+    #parser.add_argument('tag', type=str, help='A tag (string input, no #)')
+    #parser.add_argument('ID', type=str, help='Your sheet ID (string input)')
     # Parse the arguments
-    args = parser.parse_args()
+    #args = parser.parse_args()
     # Store the arguments in variables
-    tag = args.tag
-    sheet_ID = args.ID
+    #tag = args.tag
+    #sheet_ID = args.ID
+    tag = "2R989CY89"
+    sheet_ID = "1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA"
     # Output the stored variables (optional)
     print(f"Tag: {tag}")
     print(f"ID: {sheet_ID}")
     clanTag = tag
-    sheet_ID = sheet_ID
+    SPREADSHEET_ID = sheet_ID
     #return tag, sheet_ID
+
+def print_globals():
+    print(f"Global clanTag: {clanTag}")
+    print(f"Global SPREADSHEET_ID: {SPREADSHEET_ID}")
+
 
 #clanTag, SPREADSHEET_ID = '2R989CY89', '1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA'
 #clanTag, SPREADSHEET_ID = get_command_line_inputs()

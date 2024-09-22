@@ -1,5 +1,5 @@
 from discord_bot.settings import *
-
+#import discord_bot.settings as settings
 import os
 import re
 
@@ -94,6 +94,7 @@ def batch_update_cells(cellRange, textList, sheet):
 
 
 def read_range(cellRange, sheet):
+    print("SHEET ID", SPREADSHEET_ID)
     fullRange = f"{sheet}!{cellRange}"
     try:
         result = (

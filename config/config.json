@@ -1,0 +1,29 @@
+{
+  "clash_api_key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjZhZDAyZTc1LWIzMjctNGM3Yi1iNzljLWJiOTNkMzY4MWYyMyIsImlhdCI6MTcyMzMwMjMzMiwic3ViIjoiZGV2ZWxvcGVyL2E1Yjc0NTA2LWI3ZDQtZmE3OC0yMmU1LTMwYTg3OTM3YzBlYiIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE0Ny4xNDcuOTIuNDMiXSwidHlwZSI6ImNsaWVudCJ9XX0.tObIRu64OrHg2tVMB6Ry4SPBGWQIvsRJNto3Z_9IO8V0pUMGgJoXRgLQl6phL_4sGGyVfYVpclo0Dre3e438YA",
+  "base_request_url": "https://api.clashking.xyz",
+  "player_request_url": "https://api.clashking.xyz/player/%23",
+  "clan_request_url": "https://api.clashking.xyz/v1/clans/%23",
+
+  "template_id": "1hxyDoBysuXNSJJKNEcv-2UsYhct0EvJO7Zpse97Qny8",
+  "spreadsheet_folder_id": "144M0p8QWLOiaZbgNp7u3x-aVnqGi-6FY",
+
+  "columns_per_cwl": 5,
+  "cwl_info_columns": 7,
+  "war_info_columns": 6,
+  "title_row_offset": 2,
+
+  "member_sheet": "MEMBERS",
+  "raid_sheet": "RAIDS",
+  "setting_sheet": "SETTINGS",
+  "war_sheet": "WAR",
+  "clan_games_sheet": "CLAN GAMES",
+  "cwl_sheet": "CWL",
+
+  "name_column": "A",
+  "tag_column": "B",
+  "clan_status_column": "C",
+  "role_column": "D",
+  "th_level_column": "E",
+  "setting_name_column": "A",
+  "setting_value_column": "B"
+}
