@@ -2,6 +2,7 @@ from discord_bot.settings import *
 #import discord_bot.settings as settings
 import os
 import re
+from config.config import config
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -32,9 +33,9 @@ def get_credentials():
     return credentials
 
 def get_sheet_settings():
-    settingNames = read_range(entire_column(settingNameColumn), settingsSheet)
-    settingValues = read_range(entire_column(settingValueColumn), settingsSheet)
-    return (settingNames, settingValues)
+    setting_names = read_range(entire_column(config["setting_name_column"]), config["setting_sheet"])
+    setting_values = read_range(entire_column(config["setting_value_column"]), config["setting_sheet"])
+    return (setting_names, setting_values)
 
 
 
@@ -47,7 +48,7 @@ sheets = service.spreadsheets()
 def update_cell(cell,text,sheet):
     fullCell = f"{sheet}!{cell}"
     try:
-        sheets.values().update(spreadsheetId=SPREADSHEET_ID, range=fullCell
+        sheets.values().update(spreadsheetId=config["sheet_id"], range=fullCell
                            , valueInputOption="USER_ENTERED", body={"values": [[text]]}).execute()
         print(f"{text} added to cell {fullCell}")
     except HttpError as error:
@@ -83,7 +84,7 @@ def batch_update_cells(cellRange, textList, sheet):
 
         # Execute the batch update
         sheets.values().batchUpdate(
-            spreadsheetId=SPREADSHEET_ID, body=batch_update_values_request_body
+            spreadsheetId=config["sheet_id"], body=batch_update_values_request_body
         ).execute()
 
         print(f"Updated cells {fullRange}")
@@ -94,11 +95,10 @@ def batch_update_cells(cellRange, textList, sheet):
 
 
 def read_range(cellRange, sheet):
-    print("SHEET ID", SPREADSHEET_ID)
     fullRange = f"{sheet}!{cellRange}"
     try:
         result = (
-            sheets.values().get(spreadsheetId=SPREADSHEET_ID, range=fullRange).execute()
+            sheets.values().get(spreadsheetId=config["sheet_id"], range=fullRange).execute()
         )
         if "values" in result:
             rows = result["values"]
@@ -117,7 +117,7 @@ def read_range(cellRange, sheet):
 
 def get_sheet_id_by_name(sheet_name):
     # Get spreadsheet metadata
-    spreadsheet = service.spreadsheets().get(spreadsheetId=SPREADSHEET_ID).execute()
+    spreadsheet = service.spreadsheets().get(spreadsheetId=config["sheet_id"]).execute()
 
     # Iterate through sheets to find the matching sheet name
     for sheet in spreadsheet['sheets']:
@@ -148,7 +148,7 @@ def merge_cells(start_row, end_row, start_column, end_column, sheet_name):
             }
         ]
     }
-    request = service.spreadsheets().batchUpdate(spreadsheetId=SPREADSHEET_ID, body=merge_request)
+    request = service.spreadsheets().batchUpdate(spreadsheetId=config["sheet_id"], body=merge_request)
     response = request.execute()
 
     print(f"Cells merged in sheet ID {sheet_id}, range {start_row}:{end_row} - {start_column}:{end_column}")

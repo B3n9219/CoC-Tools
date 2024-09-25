@@ -3,10 +3,11 @@ from discord_bot.settings import *
 from discord_bot.spreadsheet.player import *
 import re
 from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
+from config.config import config
 
 
 def get_ck_war_info():
-    requestURL = f"{baseRequest}/war/%23{clanTag}/previous?limit=3"
+    requestURL = f"{config["base_request_url"]}/war/%23{config["clan_tag"]}/previous?limit=3"
     response = requests.get(requestURL)
     info = response.json()
     war_statuses = {}
@@ -16,15 +17,15 @@ def get_ck_war_info():
     return info, war_statuses
 
 def find_war_endpoint(war):
-    if war["clan"]["tag"] == f"#{clanTag}":
+    if war["clan"]["tag"] == f"#{config["clan_tag"]}":
         return "clan"
     else:
         return "opponent"
 
 
 def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_war_statuses):
-    sheet_war_titles = sheet.read_range("1:1", warSheet)
-    sheet_war_statuses = sheet.read_range("2:2", warSheet)[war_info_columns:]
+    sheet_war_titles = sheet.read_range("1:1", config["war_sheet"])
+    sheet_war_statuses = sheet.read_range("2:2", config["war_sheet"])[config["war_info_columns"]:]
     pattern = r'\d{2}/\d{2}/\d{4}'
     sheet_war_dates = []
     for title in sheet_war_titles:
@@ -41,9 +42,9 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
                     if util.convert_json_time_to_date(war["startTime"]) == sheet_war_dates[i]:
                         clan_endpoint = find_war_endpoint(war)
                         war_attack_info = filter_war_info(war[clan_endpoint]["members"])
-                        update_column = i+1+war_info_columns
+                        update_column = i+1+config["war_info_columns"]
                         update_column = column_to_number(update_column)
-                        title = sheet_war_titles[i+war_info_columns].split('\n')[0] + '\n'
+                        title = sheet_war_titles[i+config["war_info_columns"]].split('\n')[0] + '\n'
                         title = f"{title}{sheet_war_dates[i]}"
                         add_war_to_sheet(players_in_sheet,players_in_clan,war_attack_info, update_column, title, api_war_statuses[sheet_war_dates[i]])
 
@@ -52,8 +53,8 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
 
 
 def get_recent_war_info():
-    requestURL = clanRequestURL + clanTag + "/currentwar"
-    response = requests.get(requestURL, headers={"Authorization": "Bearer " + apiKey})
+    requestURL = config["clan_request_url"] + config["clan_tag"] + "/currentwar"
+    response = requests.get(requestURL, headers={"Authorization": "Bearer " + config["clash_api_key"]})
     info = response.json()
     if response.status_code == 200:
         war_state = info["state"]
@@ -81,12 +82,12 @@ def filter_war_info(memberInfo):
 
 def add_war_to_sheet(players_in_sheet, players_in_clan, war_info, update_column, column_title, status):
     info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, war_info, "War","")
-    util.add_attack_info_to_sheet(info_to_add, column_title, update_column, warSheet)
-    sheet.update_cell(f"{update_column}2", f"status: {status}",warSheet)
+    util.add_attack_info_to_sheet(info_to_add, column_title, update_column, config["war_sheet"])
+    sheet.update_cell(f"{update_column}2", f"status: {status}",config["war_sheet"])
 
 
 def update_war_sheet():
-    players_in_sheet = util.get_players_in_sheet(warSheet)
+    players_in_sheet = util.get_players_in_sheet(config["war_sheet"])
     players_in_clan = util.get_players_in_clan()
     info, war_statuses = get_ck_war_info()
     check_war_status_validity(players_in_sheet,players_in_clan,info, war_statuses)
@@ -99,12 +100,12 @@ def add_new_war(players_in_sheet, players_in_clan):
     if found_status == True:
         if war_state != "notInWar":
             status = get_war_status_title(war_state)
-            column_title, update_column = util.prepare_attack_column_title("War", start_date, sheetSettings["normalWarsAdded"], warSheet)
+            column_title, update_column = util.prepare_attack_column_title("War", start_date, config["normalWarsAdded"], config["war_sheet"])
             if war_state != 'preparation':
                 add_war_to_sheet(players_in_sheet, players_in_clan, player_war_info, update_column, column_title, status)
             else:
-                sheet.update_cell(f"{update_column}1", column_title, warSheet)
-                sheet.update_cell(f"{update_column}2", f"status: {status}", warSheet)
+                sheet.update_cell(f"{update_column}1", column_title, config["war_sheet"])
+                sheet.update_cell(f"{update_column}2", f"status: {status}", config["war_sheet"])
 
 def get_war_status_title(war_state):
     if war_state == "preparation":

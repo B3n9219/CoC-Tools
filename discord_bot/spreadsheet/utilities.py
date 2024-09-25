@@ -1,13 +1,14 @@
 from discord_bot.settings import *
-from player import *
+from discord_bot.spreadsheet.player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
 import requests
 import json
+from config.config import config
 
 
 def get_clan_members_json_info():
-    requestURL = clanRequestURL + clanTag + "/members"
-    response = requests.get(requestURL)#, headers={"Authorization": "Bearer " + apiKey})
+    requestURL = config["clan_request_url"] + config["clan_tag"] + "/members"
+    response = requests.get(requestURL)#, headers={"Authorization": "Bearer " + config["clash_api_key"]})
     #print(response.json())
     clanMemberInfo = response.json()["items"]
     return clanMemberInfo
@@ -77,14 +78,14 @@ def add_attack_info_to_sheet(attack_info_to_add, entry_title, update_column, upd
     #print(attack_info_to_add)
     sheet.update_cell(f"{update_column}{1+additional_offset}", entry_title, updateSheet)
     sheet.batch_update_cells(
-        f"{update_column}{title_row_offset+1}:{update_column}{len(attack_info_to_add) + title_row_offset + additional_offset}",
+        f"{update_column}{config["title_row_offset"]+1}:{update_column}{len(attack_info_to_add) + config["title_row_offset"] + additional_offset}",
         attack_info_to_add, updateSheet)
 
 
 def get_players_in_sheet(check_sheet):
-    playerNames = sheet.read_range(entire_column(nameColumn), check_sheet)
-    playerTags = sheet.read_range(entire_column(tagColumn), check_sheet)
-    playerClanStatus = sheet.read_range(entire_column(clanStatusColumn), check_sheet)
+    playerNames = sheet.read_range(entire_column(config["name_column"]), check_sheet)
+    playerTags = sheet.read_range(entire_column(config["tag_column"]), check_sheet)
+    playerClanStatus = sheet.read_range(entire_column(config["clan_status_column"]), check_sheet)
     playerNum = max(len(playerNames),len(playerTags))
     players = []
     if len(playerNames) != len(playerTags):

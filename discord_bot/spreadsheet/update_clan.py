@@ -11,16 +11,12 @@ project_dir = os.path.dirname(parent_dir)
 sys.path.append(project_dir)
 
 from discord_bot.spreadsheet.sheets import members, war, capital, games, cwl
-#from discord_bot.settings import *
-import discord_bot.settings as settings
 
+def update_clan_spreadsheet():
+    #members.update_member_sheet()
 
-sheet_settings = sheet.get_sheet_settings()
-settings.update_settings(sheet_settings)
-#members.update_member_sheet()
+    #war.update_war_sheet()
+    #capital.update_raid_sheet()
 
-#war.update_war_sheet()
-#capital.update_raid_sheet()
-
-#cwl.update_cwl_sheet()
-#games.update_games_sheet()
+    #cwl.update_cwl_sheet()
+    games.update_games_sheet()

@@ -1,46 +1,8 @@
 from datetime import *
 from dateutil.relativedelta import relativedelta
-import argparse
 
-currentDate = datetime.now()
 
-apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjZhZDAyZTc1LWIzMjctNGM3Yi1iNzljLWJiOTNkMzY4MWYyMyIsImlhdCI6MTcyMzMwMjMzMiwic3ViIjoiZGV2ZWxvcGVyL2E1Yjc0NTA2LWI3ZDQtZmE3OC0yMmU1LTMwYTg3OTM3YzBlYiIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE0Ny4xNDcuOTIuNDMiXSwidHlwZSI6ImNsaWVudCJ9XX0.tObIRu64OrHg2tVMB6Ry4SPBGWQIvsRJNto3Z_9IO8V0pUMGgJoXRgLQl6phL_4sGGyVfYVpclo0Dre3e438YA"
-baseRequest = "https://api.clashking.xyz"
-playerRequestURL = f"{baseRequest}/player/%23"  #followed by player tag (no #)
-clanRequestURL = f"{baseRequest}/v1/clans/%23"  #followed by clan tag (no #)
-
-template_id = "1hxyDoBysuXNSJJKNEcv-2UsYhct0EvJO7Zpse97Qny8"
-spreadsheet_folder_id = "144M0p8QWLOiaZbgNp7u3x-aVnqGi-6FY"
-
-columns_per_CWL = 5
-CWL_info_columns = 7
-war_info_columns = 6
-
-title_row_offset = 2
-
-#SPREADSHEET SHEET NAMES
-memberSheet = "MEMBERS"
-capitalSheet = "RAIDS"
-settingsSheet = "SETTINGS"
-warSheet = "WAR"
-clanGamesSheet = "CLAN GAMES"
-cwlSheet = "CWL"
-
-#SPREADSHEET COLUMNS
-nameColumn = "A"
-tagColumn = "B"
-clanStatusColumn = "C"
-roleColumn = "D"
-THLevelColumn = "E"
-
-settingNameColumn = "A"
-settingValueColumn = "B"
-
-#Settings updated by spreadsheet
-sheetSettings = {}
-raidWeekendsAdded = []
-#clanTag, SPREADSHEET_ID = '2QCQV9CYY', '1RtOi3D-DRc9dU9ChQtKo2sFHUETRajUcN1Cm1JGQv94'
-clanTag, SPREADSHEET_ID = "", ""
+#currentDate = datetime.now()
 
 
 def update_settings(sheet_settings):
@@ -50,35 +12,6 @@ def update_settings(sheet_settings):
     for i in range (0,len(settingNames)):
         sheetSettings[settingNames[i]] = settingValues[i]
     raidWeekendsAdded.append(sheetSettings["raidWeekendsAdded"])
-
-
-
-def get_command_line_inputs():
-    global clanTag, SPREADSHEET_ID
-    #parser = argparse.ArgumentParser(description="A script that accepts a tag and an ID.")
-    #parser.add_argument('tag', type=str, help='A tag (string input, no #)')
-    #parser.add_argument('ID', type=str, help='Your sheet ID (string input)')
-    # Parse the arguments
-    #args = parser.parse_args()
-    # Store the arguments in variables
-    #tag = args.tag
-    #sheet_ID = args.ID
-    tag = "2R989CY89"
-    sheet_ID = "1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA"
-    # Output the stored variables (optional)
-    print(f"Tag: {tag}")
-    print(f"ID: {sheet_ID}")
-    clanTag = tag
-    SPREADSHEET_ID = sheet_ID
-    #return tag, sheet_ID
-
-def print_globals():
-    print(f"Global clanTag: {clanTag}")
-    print(f"Global SPREADSHEET_ID: {SPREADSHEET_ID}")
-
-
-#clanTag, SPREADSHEET_ID = '2R989CY89', '1iEF5_o93UvmOKPaOVPsMGZpakHFNhiCeXQfzdVOCCtA'
-#clanTag, SPREADSHEET_ID = get_command_line_inputs()
 
 
 def entire_column(column):
@@ -94,28 +27,28 @@ def column_to_number(columnNum):
 
 
 #The Fireflies:
-#clanTag = "2R989CY89"
+#config["clan_tag"] = "2R989CY89"
 #SPREADSHEET_ID = "1reUNArwTCosIrk67yqSHPu5P5F06LWDdAXb14rf0AEw"
 
 #The Fireflies 2:
-#clanTag = "2RLQPCVO8"
+#config["clan_tag"] = "2RLQPCVO8"
 
 #The Bureau
-#clanTag = "2G0RLQ9J0"
+#config["clan_tag"] = "2G0RLQ9J0"
 #SPREADSHEET_ID = "1ATDoewJG9UXnwtKvp8yrrGLgeSdps9dHlTsXZiIOh70"
 
 #The Real
-#clanTag = "822VUL29"
+#config["clan_tag"] = "822VUL29"
 #SPREADSHEET_ID = "13dUQ7paaWoYbe9oEdWy9tkp5PVsQDizD8J6L5XX2BWk"
 
 #SKILL MAN
-#clanTag = "VVQ8VLPC"
+#config["clan_tag"] = "VVQ8VLPC"
 #SPREADSHEET_ID = "1oxlTAXwYyd6fJdAIfAAnqc7aaKZlWuct8RIZ2KpzMsg"
 
 #Dark Alliance
-#clanTag = "Q8CY8LYV"
+#config["clan_tag"] = "Q8CY8LYV"
 #SPREADSHEET_ID = "1tlkV018ijrKsJVNUOyz-cusBYRY2-shVNECC8g9Tu1Y"
 
 #The Shamrocks
-#clanTag = "8R9VQQ8Q"
+#config["clan_tag"] = "8R9VQQ8Q"
 #SPREADSHEET_ID = "170i6nXjqdALylhcu_ufGZCKylefI3eidQcbqoFOOEZM"
