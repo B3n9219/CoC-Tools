@@ -1,5 +1,4 @@
 import requests
-from discord_bot.settings import *
 from config.config import config
 
 

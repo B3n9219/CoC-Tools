@@ -1,10 +1,10 @@
 import requests
-from discord_bot.settings import *
-from discord_bot.spreadsheet import utilities as util
-from discord_bot.spreadsheet.player import *
-from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
-from config.config import config
 from datetime import datetime
+
+from config.config import config
+from utilities import sheet_util as util
+from discord_bot.spreadsheet.player import Player
+
 
 def get_CWL_info():
     currentDate = datetime.now()

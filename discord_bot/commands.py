@@ -3,7 +3,7 @@ from discord.ext import commands
 import discord_bot.server.load_server as server
 from discord_bot.server.ClanInfo import *
 import discord
-from bot_util import *
+from utilities.bot_util import *
 
 
 def is_tag_in_clan_list(entered_tag: str) -> bool:

@@ -1,9 +1,14 @@
-import requests
-from discord_bot.settings import *
-from discord_bot.spreadsheet.player import *
 import re
-from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
+import requests
+
 from config.config import config
+from utilities.general_util import column_to_number
+from utilities import sheet_util as util
+from discord_bot.spreadsheet.player import *
+from discord_bot.spreadsheet import spreadsheet as sheet
+
+
+
 
 
 def get_ck_war_info():

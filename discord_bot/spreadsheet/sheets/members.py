@@ -1,8 +1,10 @@
-from discord_bot.settings import *
-from discord_bot.spreadsheet.player import *
 import requests
-from discord_bot.spreadsheet import spreadsheet as sheet
+
+
 from config.config import config
+from utilities.general_util import entire_column
+from discord_bot.spreadsheet.player import Player
+from discord_bot.spreadsheet import spreadsheet as sheet
 
 
 def get_clan_members_json_info():

@@ -1,8 +1,11 @@
 import requests
-from discord_bot.settings import *
-from discord_bot.spreadsheet.player import *
-from discord_bot.spreadsheet import spreadsheet as sheet, utilities as util
+
 from config.config import config
+from utilities import sheet_util as util
+from discord_bot.spreadsheet.player import *
+from discord_bot.spreadsheet import spreadsheet as sheet
+
+
 
 def get_raid_weekend_info():
     requestURL = config["clan_request_url"] + config["clan_tag"] + "/capitalraidseasons"

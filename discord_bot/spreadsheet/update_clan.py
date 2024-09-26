@@ -13,10 +13,10 @@ sys.path.append(project_dir)
 from discord_bot.spreadsheet.sheets import members, war, capital, games, cwl
 
 def update_clan_spreadsheet():
-    #members.update_member_sheet()
+    members.update_member_sheet()
 
-    #war.update_war_sheet()
-    #capital.update_raid_sheet()
+    war.update_war_sheet()
+    capital.update_raid_sheet()
 
-    #cwl.update_cwl_sheet()
-    games.update_games_sheet()
+    cwl.update_cwl_sheet()
+    #games.update_games_sheet()

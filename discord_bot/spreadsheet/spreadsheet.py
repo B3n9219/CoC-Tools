@@ -1,14 +1,16 @@
-from discord_bot.settings import *
-#import discord_bot.settings as settings
-import os
-import re
-from config.config import config
-
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib  .flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
+import os
+import re
+
+from config.config import config
+from utilities.general_util import entire_column
+
+
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", 'https://www.googleapis.com/auth/drive.file']
 
