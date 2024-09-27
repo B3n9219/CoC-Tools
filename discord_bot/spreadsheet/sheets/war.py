@@ -22,7 +22,7 @@ def get_ck_war_info():
     return info, war_statuses
 
 def find_war_endpoint(war):
-    if war["clan"]["tag"] == f"#{config["clan_tag"]}":
+    if war["clan"]["tag"] == f"#{config['clan_tag']}":
         return "clan"
     else:
         return "opponent"
@@ -88,7 +88,7 @@ def filter_war_info(memberInfo):
 def add_war_to_sheet(players_in_sheet, players_in_clan, war_info, update_column, column_title, status):
     info_to_add = util.prepare_attack_info_to_add(players_in_sheet, players_in_clan, war_info, "War","")
     util.add_attack_info_to_sheet(info_to_add, column_title, update_column, config["war_sheet"])
-    sheet.update_cell(f"{update_column}2", f"status: {status}",config["war_sheet"])
+    sheet.update_cell(f"{update_column}2", f"status: {status}",config['war_sheet'])
 
 
 def update_war_sheet():
