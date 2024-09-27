@@ -84,11 +84,11 @@ def update_member_sheet():
         role_update_list.append(item[2])
         th_update_list.append(item[3])
         status_update_list.append(item[4])
-    sheet.batch_update_cells(f"{config["name_column"]}{1 + config["title_row_offset"]}:{config["name_column"]}{len(name_update_list) + config["title_row_offset"]}", name_update_list, config["member_sheet"])
-    sheet.batch_update_cells(f"{config["tag_column"]}{1 + config["title_row_offset"]}:{config["tag_column"]}{len(tag_update_list) + config["title_row_offset"]}", tag_update_list, config["member_sheet"])
-    sheet.batch_update_cells(f"{config["role_column"]}{1 + config["title_row_offset"]}:{config["role_column"]}{len(role_update_list) + config["title_row_offset"]}", role_update_list, config["member_sheet"])
-    sheet.batch_update_cells(f"{config["th_level_column"]}{1 + config["title_row_offset"]}:{config["th_level_column"]}{len(th_update_list) + config["title_row_offset"]}", th_update_list, config["member_sheet"])
-    sheet.batch_update_cells(f"{config["clan_status_column"]}{1 + config["title_row_offset"]}:{config["clan_status_column"]}{len(status_update_list) + config["title_row_offset"]}", status_update_list, config["member_sheet"])
+    sheet.batch_update_cells(f'{config["name_column"]}{1 + config["title_row_offset"]}:{config["name_column"]}{len(name_update_list) + config["title_row_offset"]}', name_update_list, config["member_sheet"])
+    sheet.batch_update_cells(f'{config["tag_column"]}{1 + config["title_row_offset"]}:{config["tag_column"]}{len(tag_update_list) + config["title_row_offset"]}', tag_update_list, config["member_sheet"])
+    sheet.batch_update_cells(f'{config["role_column"]}{1 + config["title_row_offset"]}:{config["role_column"]}{len(role_update_list) + config["title_row_offset"]}', role_update_list, config["member_sheet"])
+    sheet.batch_update_cells(f'{config["th_level_column"]}{1 + config["title_row_offset"]}:{config["th_level_column"]}{len(th_update_list) + config["title_row_offset"]}', th_update_list, config["member_sheet"])
+    sheet.batch_update_cells(f'{config["clan_status_column"]}{1 + config["title_row_offset"]}:{config["clan_status_column"]}{len(status_update_list) + config["title_row_offset"]}', status_update_list, config["member_sheet"])
     add_new_members_to_sheet(players_in_clan, players_in_sheet)
 
 

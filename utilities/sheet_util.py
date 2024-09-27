@@ -80,7 +80,7 @@ def add_attack_info_to_sheet(attack_info_to_add, entry_title, update_column, upd
     #print(attack_info_to_add)
     sheet.update_cell(f"{update_column}{1+additional_offset}", entry_title, updateSheet)
     sheet.batch_update_cells(
-        f"{update_column}{config["title_row_offset"]+1}:{update_column}{len(attack_info_to_add) + config["title_row_offset"] + additional_offset}",
+        f"{update_column}{config['title_row_offset']+1}:{update_column}{len(attack_info_to_add) + config['title_row_offset'] + additional_offset}",
         attack_info_to_add, updateSheet)
 
 

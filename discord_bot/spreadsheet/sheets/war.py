@@ -12,7 +12,7 @@ from discord_bot.spreadsheet import spreadsheet as sheet
 
 
 def get_ck_war_info():
-    requestURL = f"{config["base_request_url"]}/war/%23{config["clan_tag"]}/previous?limit=3"
+    requestURL = f"{config['base_request_url']}/war/%23{config['clan_tag']}/previous?limit=3"
     response = requests.get(requestURL)
     info = response.json()
     war_statuses = {}
