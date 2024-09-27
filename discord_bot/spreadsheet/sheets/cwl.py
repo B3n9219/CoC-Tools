@@ -9,7 +9,7 @@ from discord_bot.spreadsheet.player import Player
 def get_CWL_info():
     currentDate = datetime.now()
     start_date = str(currentDate)[:7]
-    requestURL = f"{config["base_request_url"]}/cwl/%23{config["clan_tag"]}/{start_date}"
+    requestURL = f"{config['base_request_url']}/cwl/%23{config['clan_tag']}/{start_date}"
     response = requests.get(requestURL)
     if response.status_code == 200:
         info = response.json()["rounds"]
