@@ -56,7 +56,7 @@ def add_new_members_to_sheet(players_in_clan,players_in_sheet):
         if not player.is_player_in_list(players_in_sheet):
             print(f"{player} is in the clan, but not in the spreadsheet")
             playerInfo = [player.name, player.tag, player.clan_status, player.role, player.th_level]
-            sheet.batch_update_cells(f"{config["name_column"]}{nextFreeRow}:{config["th_level_column"]}{nextFreeRow}",playerInfo,config["member_sheet"])
+            sheet.batch_update_cells(f"{config['name_column']}{nextFreeRow}:{config['th_level_column']}{nextFreeRow}",playerInfo,config['member_sheet'])
             nextFreeRow += 1
 
 

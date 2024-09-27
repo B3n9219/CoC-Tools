@@ -19,10 +19,10 @@ def get_CWL_info():
             roundNum = info.index(round) + 1
             clan_info = []
             for clan in round["warTags"]:
-                if clan["clan"]["tag"] == f"#{config["clan_tag"]}":
+                if clan["clan"]["tag"] == f"#{config['clan_tag']}":
                     #print("1ST", clan["startTime"][:8], clan["clan"]["name"])
                     clan_info.append(clan["clan"]["members"])
-                elif clan["opponent"]["tag"] == f"#{config["clan_tag"]}":
+                elif clan["opponent"]["tag"] == f"#{config['clan_tag']}":
                     #print("2ND", clan["startTime"][:8], clan["opponent"]["name"])
                     clan_info.append(clan["opponent"]["members"])
             for attack_info in clan_info:
