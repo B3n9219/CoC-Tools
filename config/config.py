@@ -4,7 +4,7 @@ import os
 def load_static_config(config_file='config.json'):
     # Get the directory of the current file (config.py)
     base_dir = os.path.dirname(__file__)
-
+    print("BASE DIR", base_dir)
     # Construct the full path to the config.json file
     full_path = os.path.join(base_dir, config_file)
 
