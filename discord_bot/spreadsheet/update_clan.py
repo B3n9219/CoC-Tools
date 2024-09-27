@@ -19,4 +19,4 @@ def update_clan_spreadsheet():
     capital.update_raid_sheet()
 
     cwl.update_cwl_sheet()
-    #games.update_games_sheet()
+    games.update_games_sheet()
