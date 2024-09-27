@@ -109,8 +109,8 @@ def add_new_war(players_in_sheet, players_in_clan):
             if war_state != 'preparation':
                 add_war_to_sheet(players_in_sheet, players_in_clan, player_war_info, update_column, column_title, status)
             else:
-                sheet.update_cell(f"{update_column}1", column_title, config["war_sheet"])
-                sheet.update_cell(f"{update_column}2", f"status: {status}", config["war_sheet"])
+                sheet.update_cell(f"{update_column}1", column_title, config['war_sheet'])
+                sheet.update_cell(f"{update_column}2", f"status: {status}", config['war_sheet'])
 
 def get_war_status_title(war_state):
     if war_state == "preparation":
