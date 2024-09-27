@@ -7,6 +7,7 @@ from datetime import datetime
 creds_path = "/home/benkirk1441/cloud_storage/creds/credentials.json"
 cloud_folder = "/home/benkirk1441/cloud_storage"
 update_clan_elf = "/home/benkirk1441/elf/update_clan"
+update_clan_python = "/home/benkirk1441/cloud_storage/CoC-Tools/update_clans"
 clan_list = os.path.join(cloud_folder, "clans.json")
 run_log = os.path.join(cloud_folder, "logs", "run_log.txt")
 output_log = os.path.join(cloud_folder, "logs", "output_log.txt")
@@ -28,7 +29,7 @@ with open(clan_list, 'rb') as file:
         try:
             with open(output_log, 'w') as output_file:
                 result = subprocess.run(
-                    [update_clan_elf, clan_tag, sheet_id],
+                    ["python3", update_clan_python, clan_tag, sheet_id],
                     stdout=output_file,
                     stderr=subprocess.STDOUT,
                     text=True
