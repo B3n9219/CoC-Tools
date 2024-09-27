@@ -3,7 +3,9 @@ from datetime import datetime
 
 from config.config import config
 from utilities import sheet_util as util
+from utilities.general_util import column_to_number
 from discord_bot.spreadsheet.player import Player
+from discord_bot.spreadsheet import spreadsheet as sheet
 
 
 def get_CWL_info():
