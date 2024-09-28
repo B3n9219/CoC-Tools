@@ -155,7 +155,6 @@ def merge_cells(start_row, end_row, start_column, end_column, sheet_name):
 
     print(f"Cells merged in sheet ID {sheet_id}, range {start_row}:{end_row} - {start_column}:{end_column}")
 
-
 def make_spreadsheet(sheet_title):
     try:
         drive_service = build('drive', 'v3', credentials=creds)
@@ -172,11 +171,25 @@ def make_spreadsheet(sheet_title):
             body=file_metadata
         ).execute()
 
-        # Get the new file ID and print it
-        new_file_id = copied_file.get('id')
-        print(f"Spreadsheet {sheet_title} made successfully! Spreadsheet ID: {new_file_id}")
+        copied_file_id = copied_file.get('id')
 
-        return new_file_id
+        # Make the new spreadsheet publicly accessible
+        permission_body = {
+            'type': 'anyone',
+            'role': 'reader'  # Change to 'writer' if you want to allow editing
+        }
+
+        # Create the permission for the new file
+        drive_service.permissions().create(
+            fileId=copied_file_id,
+            body=permission_body
+        ).execute()
+
+        # Print the new file ID
+        print(f"Spreadsheet '{sheet_title}' made successfully! Spreadsheet ID: {copied_file_id}")
+        print(f"The spreadsheet is now accessible at: https://docs.google.com/spreadsheets/d/{copied_file_id}/edit")
+
+        return copied_file_id
 
     except HttpError as error:
         print(f"An error occurred: {error}")

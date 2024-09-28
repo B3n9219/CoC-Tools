@@ -4,6 +4,7 @@ import os
 import config.dynamic_config as dynamic_config  # Import function for updating config
 from config.config import config  # Import the shared config
 from discord_bot.spreadsheet.update_clan import update_clan_spreadsheet
+from discord_bot.spreadsheet.spreadsheet import make_spreadsheet
 
 if __name__ == "__main__":
     project_dir = os.path.dirname(os.path.abspath(__file__))
@@ -16,7 +17,8 @@ if __name__ == "__main__":
     #print(f"Config: {config}")
     print(f"Starting application with tag: {config['clan_tag']}")
     print(f"Starting application with spreadsheet: {config['sheet_id']}")
-    update_clan_spreadsheet()
+    make_spreadsheet("TEST")
+    #update_clan_spreadsheet()
 
 
 
