@@ -24,3 +24,10 @@ def update_config_with_sheet_settings():
     setting_names, setting_values = sheet.get_sheet_settings()
     for i in range (0, len(setting_names)):
         config[setting_names[i]] = setting_values[i]
+
+
+def update_config_with_clan_settings(clan_tag, sheet_id):
+    if clan_tag is not None:
+        config['clan_tag'] = clan_tag
+    if sheet_id is not None:
+        config['sheet_id'] = sheet_id

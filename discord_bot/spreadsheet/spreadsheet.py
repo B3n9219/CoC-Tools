@@ -163,12 +163,12 @@ def make_spreadsheet(sheet_title):
         # Metadata for the new copy
         file_metadata = {
             'name': sheet_title,  # Title of the new spreadsheet
-            'parents': [spreadsheet_folder_id],  # Folder ID where the new file should be placed
+            'parents': [config["spreadsheet_folder_id"]],  # Folder ID where the new file should be placed
         }
 
         # Copy the template file
         copied_file = drive_service.files().copy(
-            fileId=template_id,
+            fileId=config["template_id"],
             body=file_metadata
         ).execute()
 
