@@ -17,8 +17,7 @@ if __name__ == "__main__":
     #print(f"Config: {config}")
     print(f"Starting application with tag: {config['clan_tag']}")
     print(f"Starting application with spreadsheet: {config['sheet_id']}")
-    make_spreadsheet("TEST")
-    #update_clan_spreadsheet()
+    update_clan_spreadsheet()
 
 
 
