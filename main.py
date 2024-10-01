@@ -6,6 +6,8 @@ from config.config import config  # Import the shared config
 from discord_bot.spreadsheet.update_clan import update_clan_spreadsheet
 from discord_bot.spreadsheet.spreadsheet import make_spreadsheet
 
+#HELLO
+
 if __name__ == "__main__":
     project_dir = os.path.dirname(os.path.abspath(__file__))
     print(project_dir)

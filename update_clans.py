@@ -7,7 +7,7 @@ from datetime import datetime
 creds_path = "/home/benkirk1441/cloud_storage/creds/credentials.json"
 cloud_folder = "/home/benkirk1441/cloud_storage"
 update_clan_elf = "/home/benkirk1441/elf/update_clan"
-update_clan_python = "/home/benkirk1441/cloud_storage/CoC-Tools/discord_bot/main.py"
+update_clan_python = "/home/benkirk1441/cloud_storage/CoC-Tools/main.py"
 clan_list = os.path.join(cloud_folder, "clans.json")
 run_log = os.path.join(cloud_folder, "logs", "run_log.txt")
 output_log = os.path.join(cloud_folder, "logs", "output_log.txt")
