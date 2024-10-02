@@ -3,7 +3,6 @@ import subprocess
 import json
 from datetime import datetime
 
-#os.chdir("/home/benkirk1441/cloud_storage/CoC-Tools")
 creds_path = "/home/benkirk1441/cloud_storage/creds/credentials.json"
 cloud_folder = "/home/benkirk1441/cloud_storage"
 update_clan_elf = "/home/benkirk1441/elf/update_clan"
@@ -37,6 +36,13 @@ with open(clan_list, 'rb') as file:
 
             # Check if the process was successful
             if result.returncode != 0:
+                error_log = os.path.join(cloud_folder, f"error_log_{clan_tag}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+                with open(error_log, 'w') as error_file:
+                    error_file.write(f"Error occurred with tag: {clan_tag} and ID: {sheet_id}\n")
+                    error_file.write(f"Timestamp: {datetime.now()}\n\n")
+                    # Append the contents of the output log to the error log
+                    with open(output_log, 'r') as output_file:
+                        error_file.write(output_file.read())
                 with open(run_log, 'a') as log_file:
                     log_file.write(f"{datetime.now()} - Error occurred with tag: {clan_tag} and ID: {sheet_id}\n")
             else:
