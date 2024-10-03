@@ -16,7 +16,7 @@ if __name__ == "__main__":
     dynamic_config.update_config_with_args()
     dynamic_config.update_config_with_sheet_settings()
     # Use the updated config
-    #print(f"Config: {config}")
+    # print(f"Config: {config}")
     print(f"Starting application with tag: {config['clan_tag']}")
     print(f"Starting application with spreadsheet: {config['sheet_id']}")
     update_clan_spreadsheet()

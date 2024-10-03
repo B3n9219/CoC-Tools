@@ -31,6 +31,9 @@ def find_war_endpoint(war):
 def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_war_statuses):
     sheet_war_titles = sheet.read_range("1:1", config["war_sheet"])
     sheet_war_statuses = sheet.read_range("2:2", config["war_sheet"])[config["war_info_columns"]:]
+    api_sheet_war_statuses = []
+    for status in sheet_war_statuses:
+        api_sheet_war_statuses.append(status_to_api_status(status))
     pattern = r'\d{2}/\d{2}/\d{4}'
     sheet_war_dates = []
     for title in sheet_war_titles:
@@ -42,7 +45,7 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
             pass
     for i in range(0, len(sheet_war_dates)):
         if sheet_war_dates[i] in api_war_statuses:
-            if sheet_war_statuses[i] != api_war_statuses[sheet_war_dates[i]]:
+            if api_sheet_war_statuses[i] != api_war_statuses[sheet_war_dates[i]]:
                 for war in war_info:
                     if util.convert_json_time_to_date(war["startTime"]) == sheet_war_dates[i]:
                         clan_endpoint = find_war_endpoint(war)
@@ -51,10 +54,8 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
                         update_column = column_to_number(update_column)
                         title = sheet_war_titles[i+config["war_info_columns"]].split('\n')[0] + '\n'
                         title = f"{title}{sheet_war_dates[i]}"
-                        add_war_to_sheet(players_in_sheet,players_in_clan,war_attack_info, update_column, title, api_war_statuses[sheet_war_dates[i]])
-
-
-
+                        status_title = get_war_status_title(api_war_statuses[sheet_war_dates[i]])
+                        add_war_to_sheet(players_in_sheet,players_in_clan,war_attack_info, update_column, title, status_title)
 
 
 def get_recent_war_info():
@@ -119,3 +120,13 @@ def get_war_status_title(war_state):
         return "battle day"
     else:
         return "war ended"
+
+def status_to_api_status(status):
+    if status == "prep day":
+        return "preperation"
+    elif status == "battle day":
+        return "inWar"
+    elif status == "war ended":
+        return "warEnded"
+    else:
+        return "not found"
