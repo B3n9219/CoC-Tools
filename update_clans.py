@@ -36,7 +36,7 @@ with open(clan_list, 'rb') as file:
 
             # Check if the process was successful
             if result.returncode != 0:
-                error_log = os.path.join(cloud_folder, f"error_log_{clan_tag}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+                error_log = os.path.join(os.path.join(cloud_folder,"logs","error_logs"), f"error_log_{clan_tag}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
                 with open(error_log, 'w') as error_file:
                     error_file.write(f"Error occurred with tag: {clan_tag} and ID: {sheet_id}\n")
                     error_file.write(f"Timestamp: {datetime.now()}\n\n")
