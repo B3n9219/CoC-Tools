@@ -56,6 +56,7 @@ def add_new_members_to_sheet(players_in_clan,players_in_sheet):
         if not player.is_player_in_list(players_in_sheet):
             print(f"{player} is in the clan, but not in the spreadsheet")
             playerInfo = [player.name, player.tag, player.clan_status, player.role, player.th_level]
+            print("NEXT ROW", nextFreeRow)
             sheet.batch_update_cells(f"{config['name_column']}{nextFreeRow}:{config['th_level_column']}{nextFreeRow}",playerInfo,config['member_sheet'])
             nextFreeRow += 1
 
@@ -84,6 +85,10 @@ def update_member_sheet():
         role_update_list.append(item[2])
         th_update_list.append(item[3])
         status_update_list.append(item[4])
+    print(f"NAMES: {name_update_list} \n"
+          f"ROLES: {role_update_list}\n"
+          f"TH: {th_update_list} \n"
+          f"STATUS: {status_update_list}")
     sheet.batch_update_cells(f'{config["name_column"]}{1 + config["title_row_offset"]}:{config["name_column"]}{len(name_update_list) + config["title_row_offset"]}', name_update_list, config["member_sheet"])
     sheet.batch_update_cells(f'{config["tag_column"]}{1 + config["title_row_offset"]}:{config["tag_column"]}{len(tag_update_list) + config["title_row_offset"]}', tag_update_list, config["member_sheet"])
     sheet.batch_update_cells(f'{config["role_column"]}{1 + config["title_row_offset"]}:{config["role_column"]}{len(role_update_list) + config["title_row_offset"]}', role_update_list, config["member_sheet"])

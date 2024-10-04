@@ -83,6 +83,8 @@ def batch_update_cells(cellRange, textList, sheet):
                 {"range": row_range, "values": values}
             ],
         }
+        print(f"CELL RANGE {row_range} \n"
+              f"DATA: {values}")
 
         # Execute the batch update
         sheets.values().batchUpdate(
