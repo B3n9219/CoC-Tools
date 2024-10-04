@@ -41,7 +41,6 @@ def get_sheet_settings():
     return (setting_names, setting_values)
 
 
-
 creds = get_credentials()
 service = build("sheets", "v4", credentials=creds)
 drive_service = build('drive', 'v3', credentials=creds)
