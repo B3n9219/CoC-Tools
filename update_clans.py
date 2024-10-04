@@ -46,12 +46,11 @@ with open(clan_list, 'rb') as file:
                 with open(run_log, 'a') as log_file:
                     log_file.write(f"{datetime.now()} - Error occurred with tag: {clan_tag} and ID: {sheet_id}\n")
             else:
-                if result.returncode != 0:
-                    test_output_log = os.path.join(os.path.join(cloud_folder, "logs", "output_logs"),
-                                             f"output_log_{clan_tag}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-                    with open(test_output_log, 'w') as test_output_file:
-                        with open(output_log, 'r') as output_file:
-                            test_output_file.write(output_file.read())
+                test_output_log = os.path.join(os.path.join(cloud_folder, "logs", "output_logs"),
+                                         f"output_log_{clan_tag}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+                with open(test_output_log, 'w') as test_output_file:
+                    with open(output_log, 'r') as output_file:
+                        test_output_file.write(output_file.read())
                 with open(run_log, 'a') as log_file:
                     log_file.write(f"{datetime.now()} - Successfully updated clan with tag: {clan_tag} and ID: {sheet_id}\n")
 
