@@ -6,6 +6,7 @@ from googleapiclient.errors import HttpError
 
 import os
 import re
+import time
 
 from config.config import config
 from utilities.general_util import entire_column
@@ -98,23 +99,31 @@ def batch_update_cells(cellRange, textList, sheet):
 
 def read_range(cellRange, sheet):
     fullRange = f"{sheet}!{cellRange}"
-    try:
-        result = (
-            sheets.values().get(spreadsheetId=config["sheet_id"], range=fullRange).execute()
-        )
-        if "values" in result:
-            rows = result["values"]
-            #print(f"{len(rows)} rows retrieved from cell range {fullRange}")
-            # Flatten the list of lists into a single list
-            result = [word for sublist in rows for word in sublist]
-        else:
-            # If "values" key is missing, it means the range is empty
-            print(f"No values found in the range {fullRange}")
-            result = []
-        return result
-
-    except HttpError as error:
-        print(error)
+    retries = 3
+    delay = 15
+    for attempt in range(retries):
+        try:
+            result = (
+                sheets.values().get(spreadsheetId=config["sheet_id"], range=fullRange).execute()
+            )
+            if "values" in result:
+                rows = result["values"]
+                #print(f"{len(rows)} rows retrieved from cell range {fullRange}")
+                # Flatten the list of lists into a single list
+                result = [word for sublist in rows for word in sublist]
+            else:
+                # If "values" key is missing, it means the range is empty
+                print(f"No values found in the range {fullRange}")
+                result = []
+            return result
+        except HttpError as error:
+            if error.resp.status in [502, 503, 504]:  # Server-side issues
+                print(f"Error {error.resp.status}: {error.content}. Retrying in {delay} seconds...")
+                time.sleep(delay)  # Wait before retrying
+            else:
+                # If it's a different error, re-raise it
+                raise
+    raise Exception(f"Failed to retrieve data from range {fullRange} after {retries} retries.")
 
 
 def get_sheet_id_by_name(sheet_name):
