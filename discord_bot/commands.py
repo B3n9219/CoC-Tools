@@ -10,17 +10,6 @@ from discord_bot.spreadsheet.update_clan import update_clan_spreadsheet
 import asyncio
 
 
-'''
-def is_tag_in_clan_list(entered_tag: str) -> bool:
-    clan_info_dict = server.convert_file_to_dict()
-    entered_tag = entered_tag[1:]
-    if entered_tag in clan_info_dict:
-        print(clan_info_dict[entered_tag])
-        return True
-    return False
-    '''
-
-
 async def clan_autocomplete(interaction: discord.Interaction, current: str):
     clans = server.retrieve_clans_from_server()
     # Suggest clans that match the user's input
@@ -30,7 +19,7 @@ async def clan_autocomplete(interaction: discord.Interaction, current: str):
         # Check if the user's input (current) matches part of the clan name (case-insensitive)
         if current.lower() in clan.lower():
             # Add a matching clan as an app_commands.Choice to the suggestions list
-            suggestions.append(app_commands.Choice(name=f"{clans[clan]["clan_name"]} | {clan}", value=clan))
+            suggestions.append(app_commands.Choice(name=f"{clans[clan]['clan_name']} | {clan}", value=clan))
         # Limit the number of suggestions to 25
         if len(suggestions) >= 10:
             break
