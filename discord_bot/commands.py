@@ -95,11 +95,11 @@ def setup_commands(bot: commands.Bot) -> None:
         clan_info = server.get_clan_info_from_server(tag)
         if clan_info is not None:
             if clan_info["sheet_id"] is not None:
-                await interaction.followup.send(f"{interaction.user.mention} This is the spreadsheet for your clan {clan_info["clan_name"]}({clan_info["tag"]}) \n"
+                await interaction.followup.send(f"{interaction.user.mention} This is the spreadsheet for your clan {clan_info['clan_name']}({clan_info['tag']}) \n"
                                                 f"https://docs.google.com/spreadsheets/d/{clan_info["sheet_id"]}/edit")
             else:
                 await interaction.followup.send(
-                    f"{interaction.user.mention} Your clan {clan_info["clan_name"]}({clan_info["tag"]}) has no spreadsheet made for it.\n"
+                    f"{interaction.user.mention} Your clan {clan_info['clan_name']}({clan_info['tag']}) has no spreadsheet made for it.\n"
                     f"use /make_spreadsheet to make one")
 
         else:
