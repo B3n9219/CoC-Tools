@@ -85,10 +85,6 @@ def update_member_sheet():
         role_update_list.append(item[2])
         th_update_list.append(item[3])
         status_update_list.append(item[4])
-    print(f"NAMES: {name_update_list} \n"
-          f"ROLES: {role_update_list}\n"
-          f"TH: {th_update_list} \n"
-          f"STATUS: {status_update_list}")
     sheet.batch_update_cells(f'{config["name_column"]}{1 + config["title_row_offset"]}:{config["name_column"]}{len(name_update_list) + config["title_row_offset"]}', name_update_list, config["member_sheet"])
     sheet.batch_update_cells(f'{config["tag_column"]}{1 + config["title_row_offset"]}:{config["tag_column"]}{len(tag_update_list) + config["title_row_offset"]}', tag_update_list, config["member_sheet"])
     sheet.batch_update_cells(f'{config["role_column"]}{1 + config["title_row_offset"]}:{config["role_column"]}{len(role_update_list) + config["title_row_offset"]}', role_update_list, config["member_sheet"])
