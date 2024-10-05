@@ -31,23 +31,30 @@ async def clan_autocomplete(interaction: discord.Interaction, current: str):
 
 
 def setup_commands(bot: commands.Bot) -> None:
-    @bot.tree.command(name="add_clan")
-    @app_commands.describe(tag="clan tag")
+    @bot.tree.command(name="add_clan", description="Adds a clan to the server")
+    @app_commands.describe(tag="Your clan's tag (must include a #)")
     async def add_clan(interaction: discord.Interaction, tag: str):
         await interaction.response.defer(ephemeral=True)
         if check_if_clan_exists(tag[1:]) == True:
-            clan_name = get_clan_name(tag[1:])
-            clan = ClanInfo(tag=tag, clan_name=clan_name, sheet_id=None, server_id=interaction.guild_id)
-            server.add_clan_to_server(clan)
-            await interaction.followup.send(f"{interaction.user.mention} your clan {clan.clan_name}({clan.tag}) has been added to the server. \n"
-                                            f"use /make_spreadsheet to create yourself a clan management spreadsheet.", ephemeral=True)
+            server_clan_info = server.get_clan_info_from_server(tag)
+            if server_clan_info is None:
+                clan_name = get_clan_name(tag[1:])
+                clan = ClanInfo(tag=tag, clan_name=clan_name, sheet_id=None, server_id=interaction.guild_id)
+                server.add_clan_to_server(clan)
+                await interaction.followup.send(f"{interaction.user.mention} your clan {clan.clan_name}({clan.tag}) has been added to the server. \n"
+                                                f"use /make_spreadsheet to create yourself a clan management spreadsheet.", ephemeral=True)
+            else:
+                await interaction.followup.send(f"{interaction.user.mention} your clan {server_clan_info['clan_name']}({server_clan_info['tag']}) "
+                                                f"has already been added to the server.", ephemeral=True)
         else:
             await interaction.followup.send(
                 f"{interaction.user.mention} the clan {tag} does not exist")
 
 
-    @bot.tree.command(name="make_spreadsheet")
-    @app_commands.describe(tag="clan tag")
+
+
+    @bot.tree.command(name="make_spreadsheet", description="Makes a clan management spreadsheet for the entered tag")
+    @app_commands.describe(tag="Your clan's tag (must include a #)")
     @app_commands.autocomplete(tag=clan_autocomplete)
     async def make_spreadsheet(interaction: discord.Interaction, tag: str):
         await interaction.response.defer(ephemeral=True)
@@ -55,7 +62,7 @@ def setup_commands(bot: commands.Bot) -> None:
             clan_name = get_clan_name(tag[1:])
             clan = ClanInfo(tag=tag, clan_name=clan_name, sheet_id=None, server_id=interaction.guild_id)
             server_clan_info = server.get_clan_info_from_server(tag)
-            if server.get_clan_info_from_server(tag) is not None:
+            if server_clan_info is not None:
                 if server_clan_info["sheet_id"] is None:
                     clan.sheet_id = server.create_clan_spreadsheet(clan)
                     server.add_clan_to_server(clan)
@@ -76,8 +83,8 @@ def setup_commands(bot: commands.Bot) -> None:
         else:
             await interaction.followup.send(f"Clan {tag} does not exist", ephemeral=True)
 
-    @bot.tree.command(name="display_spreadsheet")
-    @app_commands.describe(tag="clan tag")
+    @bot.tree.command(name="display_spreadsheet", description="Displays any spreadsheets that have been created for a clan.")
+    @app_commands.describe(tag="Your clan's tag (must include a #)")
     @app_commands.autocomplete(tag=clan_autocomplete)
     async def display_spreadsheet(interaction: discord.Interaction, tag: str):
         await interaction.response.defer(ephemeral=True)
@@ -101,7 +108,7 @@ def setup_commands(bot: commands.Bot) -> None:
 
 
 
-    @bot.tree.command(name="shutdown")
+    @bot.tree.command(name="shutdown", description="Shuts down the bot")
     @commands.is_owner()
     async def shutdown(interaction: discord.Interaction):
         await interaction.response.send_message("Shutting down the bot...", ephemeral=True)
