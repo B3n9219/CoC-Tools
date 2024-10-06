@@ -22,7 +22,7 @@ def update_config_with_args():
 
 def update_config_with_sheet_settings():
     setting_names, setting_values = sheet.get_sheet_settings()
-    for i in range (0, len(setting_names)):
+    for i in range(0, len(setting_names)):
         config[setting_names[i]] = setting_values[i]
 
 

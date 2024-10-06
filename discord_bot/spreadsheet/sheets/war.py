@@ -2,7 +2,7 @@ import re
 import requests
 
 from config.config import config
-from utilities.general_util import column_to_number
+from utilities.general_util import column_num_to_letter
 from utilities import sheet_util as util
 from discord_bot.spreadsheet.player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
@@ -51,7 +51,7 @@ def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_w
                         clan_endpoint = find_war_endpoint(war)
                         war_attack_info = filter_war_info(war[clan_endpoint]["members"])
                         update_column = i+1+config["war_info_columns"]
-                        update_column = column_to_number(update_column)
+                        update_column = column_num_to_letter(update_column)
                         title = sheet_war_titles[i+config["war_info_columns"]].split('\n')[0] + '\n'
                         title = f"{title}{sheet_war_dates[i]}"
                         status_title = get_war_status_title(api_war_statuses[sheet_war_dates[i]])

@@ -2,7 +2,7 @@ def entire_column(column):
     return f"{column}:{column}"
 
 
-def column_to_number(column_num):
+def column_num_to_letter(column_num):
     result = []
     while column_num > 0:
         column_num, remainder = divmod(column_num - 1, 26)

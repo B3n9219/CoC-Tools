@@ -1,4 +1,4 @@
-class Player():
+class Player:
     def __init__(self, name, tag, clan_status=None, role=None, th_level=None, war_attacks = 0, raid_attacks = 0,
                  gold_looted = 0, games_score = 0, cwl_stars = 0, cwl_attacks_used = 0, cwl_attacks_available = 0):
         self.name = name
@@ -20,7 +20,7 @@ class Player():
     def __repr__(self):
         return str(self)
 
-    def is_player_equal_to(self,player):
+    def is_player_equal_to(self, player):
         if player.tag == self.tag:
             return True
         else:
@@ -32,17 +32,17 @@ class Player():
                 return True
         return False
 
-    def get_attacks(self, attackType):
-        if attackType == "War":
+    def get_attacks(self, attack_type):
+        if attack_type == "War":
             return self.war_attacks
-        if attackType == "Raid":
+        if attack_type == "Raid":
             return self.raid_attacks
-        if attackType == "Games":
+        if attack_type == "Games":
             return self.games_score
-        if attackType == "Stars":
+        if attack_type == "Stars":
             return self.cwl_stars
-        if attackType == "AttacksUsed":
+        if attack_type == "AttacksUsed":
             return self.cwl_attacks_used
-        if attackType == "AttacksAvailable":
+        if attack_type == "AttacksAvailable":
             return self.cwl_attacks_available
 

@@ -16,18 +16,18 @@ client = storage.Client()
 bucket = client.bucket(coc_tools_bucket_name)
 blob = bucket.blob(clan_file)
 
-def convert_file_to_dict():
-    #clan_info_json = clan_json_blob.download_as_text()
-    #clan_info_dict = json.loads(clan_info_json)
-    clan_info_json = open(os.path.join(current_dir, 'temp', 'clans.json'))
-    clan_info_dict = json.load(clan_info_json)
-    return clan_info_dict
+
+def get_clan_info_from_server(clan_tag):
+    clans_on_server = retrieve_clans_from_server()
+    if clan_tag in clans_on_server:
+        return clans_on_server[clan_tag]
+    else:
+        return None
 
 
 def create_clan_spreadsheet(clan_info):
     clans_on_server = retrieve_clans_from_server()
     if clan_info.tag in clans_on_server:
-        print("SHEET ID", clans_on_server[clan_info.tag]["sheet_id"])
         if clans_on_server[clan_info.tag]["sheet_id"] == None:
             print("clan has been added but no spreadsheet")
             print("Creating spreadsheet...")
@@ -39,20 +39,14 @@ def create_clan_spreadsheet(clan_info):
         return None
     return sheet_id
 
-def get_clan_info_from_server(clan_tag):
-    clans_on_server = retrieve_clans_from_server()
-    if clan_tag in clans_on_server:
-        return clans_on_server[clan_tag]
-    else:
-        return None
 
 
 def retrieve_clans_from_server():
     # Initialize the client
     # Step 1: Download the existing blob content
     local_file_path = os.path.join(current_dir, 'temp', 'clans.json')
-
-    blob.download_to_filename(local_file_path)  #downloads the server clans.json to the local clans.json
+    # download the server clans.json to the local clans.json
+    blob.download_to_filename(local_file_path)
     with open(local_file_path, 'r') as file:
         json_text = file.read()
     clans_on_server = json.loads(json_text)
@@ -62,10 +56,6 @@ def retrieve_clans_from_server():
 def add_clan_to_server(clan_info):
     clans_on_server = retrieve_clans_from_server()
     local_file_path = os.path.join(current_dir, 'temp', 'clans.json')
-    #clan_info = create_clan_spreadsheet(clan_info, clans_on_server)
-    #if clan_info.tag in clans_on_server:
-    #    clan_info_dict = clans_on_server[clan_info.tag]
-    #else:
     clan_info_dict = clan_info.to_dict()
 
     clans_on_server[clan_info.tag] = clan_info_dict   #adding the new clan to the dictionary of clans on the server

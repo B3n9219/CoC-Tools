@@ -11,11 +11,17 @@ import time
 from config.config import config
 from utilities.general_util import entire_column
 
-
-
+# Getting the required scopes (full access to users' Google Sheets + full access to Drive files created by the app)
+# from Google API.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", 'https://www.googleapis.com/auth/drive.file']
 
+
 def get_credentials():
+    """
+    Retrieves the credentials and token and refreshes them if they aren't valid
+    :return: the credentials
+    """
+    # getting the project dir (CoC Tools)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(script_dir)
     project_dir = os.path.dirname(parent_dir)
