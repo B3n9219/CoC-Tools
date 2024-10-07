@@ -9,6 +9,7 @@ from utilities.bot_util import *
 from discord_bot.spreadsheet.update_clan import update_clan_spreadsheet
 import asyncio
 
+bot_owner_id = 427493072931127305
 
 async def clan_autocomplete(interaction: discord.Interaction, current: str):
     clans = server.retrieve_clans_from_server()
@@ -106,10 +107,29 @@ def setup_commands(bot: commands.Bot) -> None:
                 await interaction.followup.send(
                     f"{interaction.user.mention} the clan {tag} does not exist")
 
-
-
     @bot.tree.command(name="shutdown", description="Shuts down the bot")
     @commands.is_owner()
     async def shutdown(interaction: discord.Interaction):
-        await interaction.response.send_message("Shutting down the bot...", ephemeral=True)
-        await bot.close()
+        if interaction.user.id == bot_owner_id:
+            await interaction.response.send_message("Shutting down the bot...", ephemeral=True)
+            await bot.close()
+        else:
+            await interaction.response.send_message("You do not have the required permissions to run this command", ephemeral=True)
+    @bot.tree.command(name="display_clans", description="Displays all clans linked to the bot")
+    @commands.is_owner()
+    async def display_clans(interaction: discord.Interaction):
+        if interaction.user.id == bot_owner_id:
+            clans_on_server = server.retrieve_clans_from_server()
+            # preparing the message
+            message = ""
+            for clan_tag in clans_on_server:
+                clan_info = clans_on_server[clan_tag]
+                if clan_info["sheet_id"] is not None:
+                    message += f"{clan_info['clan_name']}({clan_info["tag"]}), spreadsheet created \n"
+                else:
+                    message += f"{clan_info['clan_name']}({clan_info["tag"]}), no spreadsheet created \n"
+            await interaction.response.send_message(message, ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have the required permissions to run this command", ephemeral=True)
+
+
