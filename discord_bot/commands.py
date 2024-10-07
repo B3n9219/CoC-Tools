@@ -125,9 +125,9 @@ def setup_commands(bot: commands.Bot) -> None:
             for clan_tag in clans_on_server:
                 clan_info = clans_on_server[clan_tag]
                 if clan_info["sheet_id"] is not None:
-                    message += f"{clan_info['clan_name']}({clan_info["tag"]}), spreadsheet created \n"
+                    message += f"{clan_info['clan_name']}({clan_info['tag']}), spreadsheet created \n"
                 else:
-                    message += f"{clan_info['clan_name']}({clan_info["tag"]}), no spreadsheet created \n"
+                    message += f"{clan_info['clan_name']}({clan_info['tag']}), no spreadsheet created \n"
             await interaction.response.send_message(message, ephemeral=True)
         else:
             await interaction.response.send_message("You do not have the required permissions to run this command", ephemeral=True)
