@@ -42,18 +42,30 @@ def get_credentials():
     return credentials
 
 def get_sheet_settings():
+    """
+    Gets settings from the SETTINGS sheet
+    :return: 2 lists one of the setting names, another of the setting values
+    """
     setting_names = read_range(entire_column(config["setting_name_column"]), config["setting_sheet"])
     setting_values = read_range(entire_column(config["setting_value_column"]), config["setting_sheet"])
     return (setting_names, setting_values)
 
 
+# setting up everything so app is able to retrieve spreadsheets + drive files
 creds = get_credentials()
 service = build("sheets", "v4", credentials=creds)
 drive_service = build('drive', 'v3', credentials=creds)
 sheets = service.spreadsheets()
 
 
-def update_cell(cell,text,sheet):
+def update_cell(cell, text, sheet):
+    """
+    Updates a cell in the desired sheet with the text passed into the function.
+    :param cell: cell to be updated e.g. A2
+    :param text: text to be put in the cell
+    :param sheet: sheet that the cell should be updated in
+    :return:
+    """
     fullCell = f"{sheet}!{cell}"
     try:
         sheets.values().update(spreadsheetId=config["sheet_id"], range=fullCell
@@ -63,11 +75,18 @@ def update_cell(cell,text,sheet):
         print(error)
 
 
-def batch_update_cells(cellRange, textList, sheet):
-    fullRange = f"{sheet}!{cellRange}"
+def batch_update_cells(cell_range, text_list, sheet):
+    """
+    Batch updates (updates multiple cells at once) for a given range + list of text
+    :param cell_range: range to be updated.  e.g. A2:A49
+    :param text_list: list of values to be updated always the same length as range of cells
+    :param sheet: sheet to be updated
+    :return:
+    """
+    fullRange = f"{sheet}!{cell_range}"
     try:
         # Extract the start and end cells from the range
-        match = re.match(r'([A-Za-z]+)(\d+):([A-Za-z]+)(\d+)', cellRange)
+        match = re.match(r'([A-Za-z]+)(\d+):([A-Za-z]+)(\d+)', cell_range)
         if not match:
             raise ValueError("Invalid range format. Example of valid format: A1:A10 or A1:F1")
 
@@ -77,10 +96,10 @@ def batch_update_cells(cellRange, textList, sheet):
         # Determine if the range spans multiple columns or just a single column
         if start_row == end_row:  # Single row, multiple columns
             row_range = f"{sheet}!{start_column}{start_row}:{end_column}{end_row}"
-            values = [textList]  # List of values for the row
+            values = [text_list]  # List of values for the row
         else:  # Multiple rows, single column
             row_range = f"{sheet}!{start_column}{start_row}:{end_column}{end_row}"
-            values = [[text] for text in textList]  # Each value in its own row
+            values = [[text] for text in text_list]  # Each value in its own row
 
         # Prepare the batch update request body
         batch_update_values_request_body = {
@@ -102,8 +121,14 @@ def batch_update_cells(cellRange, textList, sheet):
         print(f"An unexpected error occurred: {e}")
 
 
-def read_range(cellRange, sheet):
-    fullRange = f"{sheet}!{cellRange}"
+def read_range(cell_range, sheet):
+    """
+
+    :param cell_range: range of cells to be read from e.g. A2:A49
+    :param sheet: sheet to be read from
+    :return: a list of values in the provided range of cells
+    """
+    fullRange = f"{sheet}!{cell_range}"
     retries = 3
     delay = 15
     for attempt in range(retries):
