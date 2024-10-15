@@ -14,7 +14,7 @@ from discord_bot.spreadsheet import spreadsheet as sheet
 def get_ck_war_info():
     requestURL = f"{config['base_request_url']}/war/%23{config['clan_tag']}/previous?limit=3"
     response = requests.get(requestURL)
-    info = response.json()
+    info: dict = response.json()
     war_statuses = {}
     for item in info:
         formatted_date = util.convert_json_time_to_date(item["startTime"])
@@ -27,22 +27,28 @@ def find_war_endpoint(war):
     else:
         return "opponent"
 
+def get_date_from_sheet_title(title):
+    pattern = r'\d{2}/\d{2}/\d{4}'
+    match = re.search(pattern, title)
+    if match:
+        date = match.group()
+        return date
+    else:
+        return None
 
-def check_war_status_validity(players_in_sheet, players_in_clan, war_info, api_war_statuses):
+#function doesn't need players in sheet/clan get rid big nono
+def update_war_status_validity(players_in_sheet: list[Player], players_in_clan: list[Player], war_info: dict, api_war_statuses: dict):
     sheet_war_titles = sheet.read_range("1:1", config["war_sheet"])
     sheet_war_statuses = sheet.read_range("2:2", config["war_sheet"])[config["war_info_columns"]:]
     api_sheet_war_statuses = []
     for status in sheet_war_statuses:
         api_sheet_war_statuses.append(status_to_api_status(status))
-    pattern = r'\d{2}/\d{2}/\d{4}'
     sheet_war_dates = []
     for title in sheet_war_titles:
-        match = re.search(pattern, title)
-        if match:
-            date = match.group()
+        date = get_date_from_sheet_title(title)
+        if date is not None:
             sheet_war_dates.append(date)
-        else:
-            pass
+            
     for i in range(0, len(sheet_war_dates)):
         if sheet_war_dates[i] in api_war_statuses:
             if api_sheet_war_statuses[i] != api_war_statuses[sheet_war_dates[i]]:
@@ -96,7 +102,7 @@ def update_war_sheet():
     players_in_sheet = util.get_players_in_sheet(config["war_sheet"])
     players_in_clan = util.get_players_in_clan()
     info, war_statuses = get_ck_war_info()
-    check_war_status_validity(players_in_sheet,players_in_clan,info, war_statuses)
+    update_war_status_validity(players_in_sheet,players_in_clan,info, war_statuses)
     add_new_war(players_in_sheet, players_in_clan)
 
 def update_past_war():

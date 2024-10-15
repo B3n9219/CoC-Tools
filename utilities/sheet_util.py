@@ -46,7 +46,7 @@ def find_next_free_column(sheet_to_check):
     return next_free_column
 
 
-def prepare_attack_info_to_add(players_in_sheet, players_in_clan, players_attack_info, attack_type, no_info_value):
+def prepare_attack_info_to_add(players_in_sheet: list[Player], players_in_clan: list[Player], players_attack_info, attack_type, no_info_value):
     """
     Creates a list of attacks used / stars earned / CG medals
     :param players_in_sheet: list of player objects in a sheet.  Includes: name, tag, and clan status

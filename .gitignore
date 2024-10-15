@@ -1,5 +1,7 @@
-/shelf/
-/workspace.xml
 /creds/
 discord_bot/.env
 discord_bot/spreadsheet/dist
+__pycache__/
+*.sql
+.vscode
+/tests/

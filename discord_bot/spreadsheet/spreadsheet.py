@@ -132,6 +132,7 @@ def read_range(cell_range, sheet):
     retries = 3
     delay = 15
     for attempt in range(retries):
+        result: list[str] = []
         try:
             result = (
                 sheets.values().get(spreadsheetId=config["sheet_id"], range=fullRange).execute()
