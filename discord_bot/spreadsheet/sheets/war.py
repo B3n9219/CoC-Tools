@@ -4,7 +4,7 @@ import requests
 from config.config import config
 from utilities.general_util import column_num_to_letter
 from utilities import sheet_util as util
-from discord_bot.spreadsheet.player import *
+from player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
 
 

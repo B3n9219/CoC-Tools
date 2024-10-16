@@ -11,6 +11,21 @@ def open_db_connection():
         password="Oreo9898", 
         port=5432
     )
+    
+def get_db_players_in_clan(conn, clan):
+    with conn.cursor() as cur:
+        try:
+            print('looking for:', clan)
+            cur.execute(
+                """SELECT * FROM players WHERE clan_tag = %s;""",
+                (clan,)
+            )
+            conn.commit()  # Commit the transaction
+            for row in cur.fetchall():
+                print(row)
+        except Exception as e:
+            conn.rollback()  # Roll back the transaction in case of error
+            print(f"Error selecting all players from clan {clan}: {e}") 
 
 def add_player_to_db(conn, tag, name, clan_tag):
     """Adds a player to the database."""    
@@ -47,30 +62,3 @@ def close_db_connection(conn):
     """Close the database connection."""
     if conn:
         conn.close()
-
-
-def read_and_add_clans(json_file, conn):
-    with open(json_file, 'r') as file:
-        clans_data = json.load(file)
-    
-    # Iterate over all clans in the JSON
-    for clan in clans_data.values():
-        tag = clan['tag']
-        name = clan['clan_name']
-        sheet_id = clan['sheet_id']
-        server_id = clan['server_id']
-        
-        # Add the clan to the database using the provided function
-        add_clan_to_db(conn, tag, name, sheet_id, server_id)
-
-
-# Example usage:
-if __name__ == "__main__":
-    conn = open_db_connection()
-    #player_id = add_player_to_db(conn, 'example_tag', 'John Doe', 'example_clan')
-    #if player_id:
-    #    print(f"Player added with ID: {player_id}")
-    file_path = 'database/temp.json'
-    read_and_add_clans(file_path, conn)
-    
-    close_db_connection(conn)

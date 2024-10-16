@@ -4,7 +4,7 @@ from datetime import datetime
 from config.config import config
 from utilities import sheet_util as util
 from utilities.general_util import column_num_to_letter
-from discord_bot.spreadsheet.player import Player
+from player import Player
 from discord_bot.spreadsheet import spreadsheet as sheet
 
 

@@ -3,7 +3,7 @@ import json
 
 from config.config import config
 from utilities.general_util import entire_column, column_num_to_letter
-from discord_bot.spreadsheet.player import *
+from player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
 
 
