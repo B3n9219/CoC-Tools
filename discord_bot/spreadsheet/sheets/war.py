@@ -1,14 +1,11 @@
 import re
 import requests
 
+from utilities import sheet_util as util
 from config.config import config
 from utilities.general_util import column_num_to_letter
-from utilities import sheet_util as util
-from player import *
+from player.player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
-
-
-
 
 
 def get_ck_war_info():

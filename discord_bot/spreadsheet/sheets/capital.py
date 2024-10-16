@@ -2,7 +2,7 @@ import requests
 
 from config.config import config
 from utilities import sheet_util as util
-from player import *
+from player.player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
 
 

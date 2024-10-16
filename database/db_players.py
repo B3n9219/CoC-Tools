@@ -1,4 +1,5 @@
 import database as db
+import player
 
 def get_players_in_db(conn, clan):
     """gets the players in the spreadsheet who are in a given clan"""

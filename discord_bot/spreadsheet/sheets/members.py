@@ -3,7 +3,7 @@ import requests
 
 from config.config import config
 from utilities.general_util import entire_column
-from player import Player
+from player.player import Player
 from discord_bot.spreadsheet import spreadsheet as sheet
 
 

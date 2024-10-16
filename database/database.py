@@ -1,6 +1,12 @@
 import psycopg2
 from psycopg2 import sql
+
 import json
+
+import utilities
+
+from player import *
+
 
 def open_db_connection():
     """Create and return a database connection."""
@@ -21,8 +27,8 @@ def get_db_players_in_clan(conn, clan):
                 (clan,)
             )
             conn.commit()  # Commit the transaction
-            for row in cur.fetchall():
-                print(row)
+            player = cur.fetchall()
+            print(player)
         except Exception as e:
             conn.rollback()  # Roll back the transaction in case of error
             print(f"Error selecting all players from clan {clan}: {e}") 

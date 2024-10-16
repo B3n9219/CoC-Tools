@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 
 from config.config import config
 from utilities import sheet_util as util
-from player import *
+from player.player import *
 
 
 def get_clan_games_json_info():
