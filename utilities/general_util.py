@@ -8,3 +8,15 @@ def column_num_to_letter(column_num):
         column_num, remainder = divmod(column_num - 1, 26)
         result.append(chr(remainder + ord('A')))
     return ''.join(reversed(result))
+
+
+def strip_title(text):
+    stripped_text = ""
+    try:
+        lines = text.splitlines()
+        if len(lines) <= 1:
+            return text.strip()
+        return '\n'.join(line.strip() for line in lines)
+    except:
+        print(f"Unable to strip text: {text}")
+        return None

@@ -2,7 +2,7 @@ import requests
 import json
 
 from config.config import config
-from utilities.general_util import entire_column, column_num_to_letter
+from utilities.general_util import entire_column, column_num_to_letter, strip_title
 from discord_bot.spreadsheet.player import *
 from discord_bot.spreadsheet import spreadsheet as sheet
 
@@ -92,12 +92,13 @@ def prepare_attack_column_title(attack_type, start_date, column_filled_count, up
     currentEntryNum = int(column_filled_count)
     entryTitle = f"{attack_type} {currentEntryNum} \n {start_date}"
     # checking if the entry being prepared is already in the spreadsheet
-    if entryTitle == last_column_title:
+
+    if strip_title(entryTitle) == strip_title(last_column_title):
         # if it is update_column set to last entered column, so the data is overwritten / updated
         update_column = last_column_letter
     else:
         update_column = freeColumn
-        entryTitle = f"{attack_type} {currentEntryNum + 1} \n {start_date}"
+        entryTitle = f"{attack_type} {currentEntryNum + 1}\n{start_date}"
     return entryTitle, update_column
 
 
